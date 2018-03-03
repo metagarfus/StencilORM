@@ -1,4 +1,6 @@
 ﻿using System;
+using StencilORM.Parsers;
+
 namespace StencilORM.Query
 {
     public enum ExprType
@@ -6,12 +8,54 @@ namespace StencilORM.Query
         LITERAL,
         EXPR,
         VARIABLE,
+        PARAM,
+        FUNCTION,
         EMPTY,
     }
 
     public interface IExpr
     {
         ExprType Type { get; }
+        IExpr Negate();
+    }
+
+    public struct Function : IExpr
+    {
+        public ExprType Type => ExprType.FUNCTION;
+
+        public IExpr[] Args { get; set; }
+
+        public Function(params IExpr[] args)
+        {
+            this.Args = args;
+        }
+
+        public IExpr Negate()
+        {
+            throw new NotSupportedException("Parameters cannot be negated");
+        }
+    }
+
+    public struct Param : IExpr
+    {
+        public ExprType Type => ExprType.PARAM;
+
+        public string Name { get; set; }
+
+        public Param(string name)
+        {
+            this.Name = name;
+        }
+
+        public static implicit operator Param(string name)
+        {
+            return new Param(name);
+        }
+
+        public IExpr Negate()
+        {
+            throw new NotSupportedException("Parameters cannot be negated");
+        }
     }
 
     public struct Variable : IExpr
@@ -41,6 +85,10 @@ namespace StencilORM.Query
             return new Variable(name);
         }
 
+        public IExpr Negate()
+        {
+            return Expr.Mul((Literal)(-1), this);
+        }
     }
 
     public struct Literal : IExpr
@@ -57,6 +105,14 @@ namespace StencilORM.Query
             };
         }
 
+        public static implicit operator Literal(long value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
         public static implicit operator Literal(double value)
         {
             return new Literal
@@ -64,6 +120,15 @@ namespace StencilORM.Query
                 Value = value
             };
         }
+
+        public static implicit operator Literal(float value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
 
         public static implicit operator Literal(decimal value)
         {
@@ -79,6 +144,23 @@ namespace StencilORM.Query
             {
                 Value = value
             };
+        }
+
+        public IExpr Negate()
+        {
+            if (Value is short)
+                return (Literal)(-((short) Value));
+            if (Value is int)
+                return (Literal)(-((int)Value));
+            if (Value is long)
+                return (Literal)(-((long)Value));
+            if (Value is float)
+                return (Literal)(-((float)Value));
+            if (Value is double)
+                return (Literal)(-((double)Value));
+            if (Value is decimal)
+                return (Literal)(-((decimal)Value));
+            return Expr.Mul((Literal)(-1), this);
         }
     }
 
@@ -109,6 +191,11 @@ namespace StencilORM.Query
                 throw new Exception("Expression is null or non-appendable");
             return appendable;
         }
+
+        public IExpr Negate()
+        {
+            return this;
+        }
     }
 
     public struct Expr : IAppendableExpr
@@ -119,7 +206,12 @@ namespace StencilORM.Query
         public IExpr Right { get; set; }
         public Operation Operation { get; set; }
 
-        public static readonly Empty Empty;
+        public static readonly Empty Empty = new Empty();
+
+        public IExpr Negate()
+        {
+            return Expr.Mul((Literal)(-1), this);
+        }
 
         public static Expr NewExpr(Operation operation, IExpr left, IExpr right)
         {
@@ -131,7 +223,8 @@ namespace StencilORM.Query
             };
         }
 
-        public IAppendableExpr And(IExpr right) {
+        public IAppendableExpr And(IExpr right)
+        {
             return Expr.And(this, right);
         }
 
@@ -140,7 +233,8 @@ namespace StencilORM.Query
             return Expr.Or(this, right);
         }
 
-        public static Expr Add(IExpr Left, IExpr right) {
+        public static Expr Add(IExpr Left, IExpr right)
+        {
             return NewExpr(Operation.ADD, Left, right);
         }
 
@@ -184,6 +278,11 @@ namespace StencilORM.Query
             return NewExpr(Operation.EQUALS, Left, right);
         }
 
+        public static Expr NotEq(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.NOTEQUALS, Left, right);
+        }
+
         public static Expr And(IExpr Left, IExpr right)
         {
             return NewExpr(Operation.AND, Left, right);
@@ -224,8 +323,9 @@ namespace StencilORM.Query
             return NewExpr(Operation.AS, Left, null);
         }*/
 
-        public static IExpr Parse(string source) {
-            return null;
-        } 
+        public static IExpr Parse(string source)
+        {
+            return StencilContext.DefaultExprParser.Parse(source);
+        }
     }
 }

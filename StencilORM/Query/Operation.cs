@@ -14,6 +14,7 @@ namespace StencilORM.Query
         GTE,
         LTE,
         EQUALS,
+        NOTEQUALS,
         LIKE,
         IN,
         NOTIN,

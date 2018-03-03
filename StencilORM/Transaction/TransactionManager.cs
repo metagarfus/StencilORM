@@ -3,9 +3,14 @@ namespace StencilORM.Transaction
 {
     public static class TransactionManager
     {
-        /*public static TransactionManager()
+        public static T CallInTransaction<T>(IConnectionSource source, Func<IConnectionSource, T> runInsideTransaction)
         {
-            new
-        }*/
+            using (ITransaction transaction = source.StartTransaction())
+            {
+                var result = runInsideTransaction(source);
+                transaction.Commit();
+                return result;
+            }
+        }
     }
 }

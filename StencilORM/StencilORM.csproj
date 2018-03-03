@@ -37,12 +37,26 @@
     <Compile Include="Query\Query.cs" />
     <Compile Include="Transaction\TransactionManager.cs" />
     <Compile Include="Transaction\ITransaction.cs" />
-    <Compile Include="QueryContext.cs" />
+    <Compile Include="StencilContext.cs" />
     <Compile Include="Query\OrderBy.cs" />
+    <Compile Include="IConnectionSource.cs" />
+    <Compile Include="Query\MetadataResolver.cs" />
+    <Compile Include="Query\IQueryCompiler.cs" />
+    <Compile Include="Query\Update.cs" />
+    <Compile Include="Query\Insert.cs" />
+    <Compile Include="Query\InsertOrUpdate.cs" />
+    <Compile Include="Annotations\DatabaseTableAttribute.cs" />
+    <Compile Include="Annotations\DatabaseFieldAttribute.cs" />
+    <Compile Include="Annotations\DataType.cs" />
+    <Compile Include="Parsers\IExprParser.cs" />
+    <Compile Include="Parsers\ExprParser.cs" />
+    <Compile Include="Query\Value.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Query\" />
     <Folder Include="Transaction\" />
+    <Folder Include="Annotations\" />
+    <Folder Include="Parsers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

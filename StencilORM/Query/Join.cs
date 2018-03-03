@@ -3,23 +3,25 @@ namespace StencilORM.Query
 {
     public struct Join
     {
-        public Query Outer { get; set; }
+        //public Query Outer { get; set; }
         public Query Inner { get; set; }
         public IExpr On { get; set; }
+        public bool LeftJoin { get; set; }
 
-        public Join(Query outer, Query inner, Expr[] outerKeys, Expr[] innerKeys)
-            : this(outer, inner, ZipOn(outerKeys, innerKeys))
+        public Join(/*Query outer,*/ Query inner, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
+            : this(/*outer,*/ inner, ZipOn(outerKeys, innerKeys), leftJoin)
         {
         }
 
-        public Join(Query outer, Query inner, IExpr on)
+        public Join(/*Query outer,*/ Query inner, IExpr on, bool leftJoin)
         {
-            Outer = outer;
+            //Outer = outer;
             Inner = inner;
             On = on;
+            LeftJoin = leftJoin;
         }
 
-        private static IAppendableExpr ZipOn(Expr[] outerKeys, Expr[] innerKeys)
+        private static IAppendableExpr ZipOn(IExpr[] outerKeys, IExpr[] innerKeys)
         {
             if (outerKeys.Length != innerKeys.Length)
                 throw new Exception("Inner and Outer key selectors must specify the same number of keys");
