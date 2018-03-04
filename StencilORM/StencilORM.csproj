@@ -40,7 +40,6 @@
     <Compile Include="StencilContext.cs" />
     <Compile Include="Query\OrderBy.cs" />
     <Compile Include="IConnectionSource.cs" />
-    <Compile Include="Query\MetadataResolver.cs" />
     <Compile Include="Query\IQueryCompiler.cs" />
     <Compile Include="Query\Update.cs" />
     <Compile Include="Query\Insert.cs" />
@@ -52,12 +51,15 @@
     <Compile Include="Query\Value.cs" />
     <Compile Include="Query\Set.cs" />
     <Compile Include="Query\Delete.cs" />
+    <Compile Include="Metadata\MetadataResolver.cs" />
+    <Compile Include="Metadata\TableMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Query\" />
     <Folder Include="Transaction\" />
     <Folder Include="Annotations\" />
     <Folder Include="Parsers\" />
+    <Folder Include="Metadata\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

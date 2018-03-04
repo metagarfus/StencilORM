@@ -1,5 +1,6 @@
 ﻿using System;
-namespace StencilORM.Query
+using StencilORM.Query;
+namespace StencilORM.Metadata
 {
     public class MetadataResolver
     {
