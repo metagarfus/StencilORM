@@ -222,49 +222,49 @@ namespace StencilORM.Query
         }
 
 
-        public IEnumerable<T> Execute<T>(IQueryCompiler compiler, Query query, params Value[] parameters)
+        public IEnumerable<T> Execute<T>(IQueryCompiler compiler, params Value[] parameters)
         {
-            return compiler.Execute<T>(query, parameters);
+            return compiler.Execute<T>(this, parameters);
         }
 
-        public dynamic Execute(IQueryCompiler compiler, Type type, Query query, params Value[] parameters)
+        public dynamic Execute(IQueryCompiler compiler, Type type, params Value[] parameters)
         {
-            return compiler.Execute(type, query, parameters);
+            return compiler.Execute(type, this, parameters);
         }
 
-        public IEnumerable<string[]> Execute(IQueryCompiler compiler, Query query, params Value[] parameters)
+        public IEnumerable<string[]> Execute(IQueryCompiler compiler, params Value[] parameters)
         {
-            return compiler.Execute(query, parameters);
+            return compiler.Execute(this, parameters);
         }
 
-        public IEnumerable<T> Execute<T>(IConnectionSource source, Query query, params Value[] parameters)
+        public IEnumerable<T> Execute<T>(IConnectionSource source, params Value[] parameters)
         {
-            return Execute<T>(source.QueryCompiler, query, parameters);
+            return Execute<T>(source.QueryCompiler, parameters);
         }
 
-        public dynamic Execute(IConnectionSource source, Type type, Query query, params Value[] parameters)
+        public dynamic Execute(IConnectionSource source, Type type, params Value[] parameters)
         {
-            return Execute(source.QueryCompiler, type, query, parameters);
+            return Execute(source.QueryCompiler, type, parameters);
         }
 
-        public IEnumerable<string[]> Execute(IConnectionSource source, Query query, params Value[] parameters)
+        public IEnumerable<string[]> Execute(IConnectionSource source, params Value[] parameters)
         {
-            return Execute(source.QueryCompiler,query, parameters);
+            return Execute(source.QueryCompiler, parameters);
         }
 
-        public IEnumerable<T> Execute<T>(Query query, params Value[] parameters)
+        public IEnumerable<T> Execute<T>(params Value[] parameters)
         {
-            return Execute<T>(StencilContext.ConnectionSource, query, parameters);
+            return Execute<T>(StencilContext.ConnectionSource, parameters);
         }
 
-        public dynamic Execute(Type type, Query query, params Value[] parameters)
+        public dynamic Execute(Type type, params Value[] parameters)
         {
-            return Execute(StencilContext.ConnectionSource, type, query, parameters);
+            return Execute(StencilContext.ConnectionSource, type, parameters);
         }
 
-        public IEnumerable<string[]> Execute(Query query, params Value[] parameters)
+        public IEnumerable<string[]> Execute(params Value[] parameters)
         {
-            return Execute(StencilContext.ConnectionSource, query, parameters);
+            return Execute(StencilContext.ConnectionSource, parameters);
         }
     }
 

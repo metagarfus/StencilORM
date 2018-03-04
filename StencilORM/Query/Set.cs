@@ -1,15 +1,15 @@
 ﻿using System;
 namespace StencilORM.Query
 {
-    public struct Value
+    public struct Set
     {
         public string Name { get; set; }
-        public IExpr Expr { get; set; }
+        public IExpr Value { get; set; }
 
-        public Value(string name, IExpr expr)
+        public Set(string name, IExpr value)
         {
             this.Name = name;
-            this.Expr = expr;
+            this.Value = value;
         }
     }
 }

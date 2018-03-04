@@ -1,28 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
-
 namespace StencilORM.Query
 {
-    public class Insert
+    public class Delete
     {
         public string TableName { get; private set; }
-        public List<Set> Sets { get; private set; } = new List<Set>();
+        public IAppendableExpr WhereExpr { get; private set; }
 
-        public Insert(string tableName)
+
+
+        public Delete(string tableName)
         {
             this.TableName = tableName;
         }
 
-        public Insert Set(params Set[] sets)
+        public Delete Where(Expr expr)
         {
-            this.Sets.AddRange(sets);
+            this.WhereExpr = this.WhereExpr.And(expr);
             return this;
         }
 
-        public Insert Set(string name, IExpr value)
+        public Delete Where(string expr)
         {
-            return Set(new Set(name, value));
+            this.WhereExpr = this.WhereExpr.And(Expr.Parse(expr));
+            return this;
         }
+
+        public Delete WhereOr(Expr expr)
+        {
+            this.WhereExpr = this.WhereExpr.Or(expr);
+            return this;
+        }
+
+        public Delete WhereOr(string expr)
+        {
+            this.WhereExpr = this.WhereExpr.Or(Expr.Parse(expr));
+            return this;
+        }
+
         public bool Execute(IQueryCompiler compiler, out int rowsAltered, params Value[] parameters)
         {
             return compiler.Execute(this, out rowsAltered, parameters);
@@ -39,17 +53,17 @@ namespace StencilORM.Query
         }
     }
 
-    public class Insert<T> : Insert
+    public class Delete<T> : Update
     {
-        public Insert()
+        public Delete()
             : base(MetadataResolver.TableName<T>())
         {
         }
 
-        public Insert(T value, params string[] columns)
+        public Delete(T value, params string[] columns)
            : base(MetadataResolver.TableName<T>())
         {
-            Set(MetadataResolver.Sets<T>(value, columns));
+            Where(MetadataResolver.IdentityExpr<T>(value));
         }
     }
 }

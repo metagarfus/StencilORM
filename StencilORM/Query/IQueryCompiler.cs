@@ -8,8 +8,12 @@ namespace StencilORM.Query
         IEnumerable<T> Execute<T>(Query query, params Value[] parameters);
         dynamic Execute(Type type, Query query, params Value[] parameters);
         IEnumerable<string[]> Execute(Query query, params Value[] parameters);
-        bool Update(Update query, out int rowsAltered, params Value[] parameters);
+        bool Execute(Insert query, out int rowsAltered, params Value[] parameters);
+        bool Execute(Update query, out int rowsAltered, params Value[] parameters);
+        bool Execute(Delete query, out int rowsAltered, params Value[] parameters);
+
+       /* bool Update(Update query, out int rowsAltered, params Value[] parameters);
         bool Insert(Insert query, out int rowsAltered, params Value[] parameters);
-        bool InsertOrUpdate(InsertOrUpdate query, out int rowsAltered, params Value[] parameters);
+        bool InsertOrUpdate(InsertOrUpdate query, out int rowsAltered, params Value[] parameters);*/
     }
 }

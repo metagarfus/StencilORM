@@ -44,13 +44,14 @@
     <Compile Include="Query\IQueryCompiler.cs" />
     <Compile Include="Query\Update.cs" />
     <Compile Include="Query\Insert.cs" />
-    <Compile Include="Query\InsertOrUpdate.cs" />
     <Compile Include="Annotations\DatabaseTableAttribute.cs" />
     <Compile Include="Annotations\DatabaseFieldAttribute.cs" />
     <Compile Include="Annotations\DataType.cs" />
     <Compile Include="Parsers\IExprParser.cs" />
     <Compile Include="Parsers\ExprParser.cs" />
     <Compile Include="Query\Value.cs" />
+    <Compile Include="Query\Set.cs" />
+    <Compile Include="Query\Delete.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Query\" />
