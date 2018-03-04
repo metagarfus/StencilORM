@@ -10,6 +10,7 @@ namespace StencilORM.Query
         VARIABLE,
         PARAM,
         FUNCTION,
+        IF,
         EMPTY,
     }
 
@@ -138,6 +139,14 @@ namespace StencilORM.Query
             };
         }
 
+        public static implicit operator Literal(bool value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
         public static implicit operator Literal(string value)
         {
             return new Literal
@@ -160,6 +169,31 @@ namespace StencilORM.Query
                 return (Literal)(-((double)Value));
             if (Value is decimal)
                 return (Literal)(-((decimal)Value));
+            if (Value is bool)
+                return (Literal)(!((bool)Value));
+            return Expr.Mul((Literal)(-1), this);
+        }
+    }
+
+    public struct If : IExpr
+    {
+        public ExprType Type => ExprType.IF;
+
+        public IExpr Condition { get; set; }
+
+        public IExpr ThenExpr { get; set; }
+
+        public IExpr ElseExpr { get; set; }
+
+        public If(IExpr condition, IExpr thenExpr, IExpr elseExpr)
+        {
+            this.Condition = condition;
+            this.ThenExpr = thenExpr;
+            this.ElseExpr = elseExpr;
+        }
+
+        public IExpr Negate()
+        {
             return Expr.Mul((Literal)(-1), this);
         }
     }

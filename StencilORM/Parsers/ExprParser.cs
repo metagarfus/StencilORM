@@ -138,7 +138,24 @@ namespace StencilORM.Parsers
 
         private IExpr ParseFromTheTop()
         {
-            return ParseLogicalExpression();
+            return ParseIf();
+        }
+
+        private IExpr ParseIf()
+        {
+            IExpr result = ParseLogicalExpression();
+            for (;;)
+            {
+                if (Consume('?'))
+                {
+                    var thenExpr = ParseFromTheTop();
+                    ConsumeOrFail(':');
+                    var elseExpr = ParseFromTheTop();
+                    result = new If(result, thenExpr, elseExpr);
+                }
+                else
+                    return result;
+            }
         }
 
         protected IExpr ParseLogicalExpression()
@@ -168,13 +185,15 @@ namespace StencilORM.Parsers
             {
                 if (Consume('<'))
                 {
+                    bool orEqual = Consume('='); 
                     var right = ParseArithmetic();
-                    result = (Consume('=') ? Expr.LtE(result, right) : Expr.Lt(result, right));
+                    result = (orEqual ? Expr.LtE(result, right) : Expr.Lt(result, right));
                 }
                 else if (Consume('>'))
                 {
+                    bool orEqual = Consume('=');
                     var right = ParseArithmetic();
-                    result = (Consume('=') ? Expr.GtE(result, right) : Expr.Gt(result, right));
+                    result = (orEqual ? Expr.GtE(result, right) : Expr.Gt(result, right));
                 }
                 else if (Consume('=') && ConsumeOrFail('='))
                 {
@@ -231,7 +250,7 @@ namespace StencilORM.Parsers
             int startPos = this.position;
             if (Consume('('))
             {
-                result = ParseLogicalExpression();
+                result = ParseFromTheTop();
                 ConsumeOrFail(')');
             }
             else if (Consume('\''))
@@ -257,10 +276,10 @@ namespace StencilORM.Parsers
             else if ((currentChar >= 'a' && currentChar <= 'z') 
                      || (currentChar >= 'A' && currentChar <= 'Z')
                      || currentChar == '_'
-                     || currentChar == '?')
+                     || currentChar == '$')
             {
                 bool isParam = false;
-                if (currentChar == '?') {
+                if (currentChar == '$') {
                     startPos++;
                     NextChar();
                     isParam = true;
@@ -275,6 +294,10 @@ namespace StencilORM.Parsers
                 string name = source.Substring(startPos, this.position - startPos);
                 if (isParam)
                     result = (Param)name;
+                else if (name == "true")
+                    result = (Literal)true;
+                else if (name == "false")
+                    result = (Literal)false;
                 else if (Consume('(')) {
                     List<IExpr> args = new List<IExpr>();
                     do
@@ -283,7 +306,8 @@ namespace StencilORM.Parsers
                     } while (Consume(','));
                     ConsumeOrFail(')');
                     result = new Function(args.ToArray());
-                } else
+                }  
+                else
                     result = (Variable)name;
                
             }
