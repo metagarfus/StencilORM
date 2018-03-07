@@ -14,10 +14,10 @@ namespace StencilORM.Query
         //public Type SourceType { get; set; }
         //public Type ResultType { get; set; }
         public List<Column> Columns { get; private set; } = new List<Column>();
-        public IAppendableExpr WhereExpr { get; private set; }
+        public IAppendableExpr WhereExpr { get; private set; } = Expr.Empty;
         public List<Join> Joins { get; private set; } = new List<Join>();
         public List<Column> GroupByColumns { get; private set; } = new List<Column>();
-        public IAppendableExpr GroupWhereExpr { get; private set; }
+        public IAppendableExpr GroupWhereExpr { get; private set; } = Expr.Empty;
         public List<OrderBy> OrderByExprs { get; private set; } = new List<OrderBy>();
         public int RowsLimit { get; set; }
         public int RowsOffset { get; set; }
@@ -267,6 +267,11 @@ namespace StencilORM.Query
             : base(null, tableName, alias, typeof(T), null)
         {
         }*/
+
+        public Query()
+           : base(MetadataResolver.TableName<T>(), null)
+        {
+        }
 
         public Query(string alias)
             : base(MetadataResolver.TableName<T>(), alias)

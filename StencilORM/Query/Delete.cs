@@ -6,7 +6,7 @@ namespace StencilORM.Query
     public class Delete
     {
         public string TableName { get; private set; }
-        public IAppendableExpr WhereExpr { get; private set; }
+        public IAppendableExpr WhereExpr { get; private set; } = Expr.Empty;
 
         public Delete(string tableName)
         {

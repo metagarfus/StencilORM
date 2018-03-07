@@ -23,6 +23,16 @@ namespace Test
             var expr13 = Expr.Parse("true");
             var expr14 = Expr.Parse("false");
             var expr15 = Expr.Parse("!true");
+            Guid guid = Guid.NewGuid();
+            var literal = (Literal)guid;
+            var update = new Update<ExampleTable>(new ExampleTable { Key = guid });
+            var update2 = new Update<ExampleTable>(new ExampleTable { Key = guid }, "Description");
+            var select = new Query<ExampleTable>().InnerJoin(new Query("SomeTable"),
+                                                             new string[] { "ForeignKey" },
+                                                             new string[] { "SomeKey" });
+            var select2 = new Query<ExampleTable>().LeftJoin(new Query("SomeTable"),
+                                                             new string[] { "ForeignKey" },
+                                                             new string[] { "SomeKey" });
             Console.WriteLine("Hello World!");
         }
     }

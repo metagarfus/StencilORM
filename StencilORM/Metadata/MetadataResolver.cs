@@ -64,7 +64,7 @@ namespace StencilORM.Metadata
 
         private static Set NewSet<T>(T value, KeyValuePair<string, FieldMetadata> item)
         {
-            return new Set(item.Key, (Literal)item.Value.PropertyInfo.GetValue(value));
+            return new Set(item.Key, new Literal(item.Value.PropertyInfo.GetValue(value)));
         }
 
         internal static IExpr IdentityExpr<T>(T value)
@@ -74,8 +74,8 @@ namespace StencilORM.Metadata
             foreach (var item in metadata.Keys)
             {
                 var keyName = (Variable) item.Key;
-                var keyValue = (Literal)item.Value.PropertyInfo.GetValue(value);
-                result.And(Expr.Eq(keyName, keyValue));
+                var keyValue = new Literal(item.Value.PropertyInfo.GetValue(value));
+                result = result.And(Expr.Eq(keyName, keyValue));
             }
             return result;
         }

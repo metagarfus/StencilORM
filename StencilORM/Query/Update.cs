@@ -8,7 +8,7 @@ namespace StencilORM.Query
     {
         public string TableName { get; private set; }
         public List<Set> Sets { get; private set; } = new List<Set>();
-        public IAppendableExpr WhereExpr { get; private set; }
+        public IAppendableExpr WhereExpr { get; private set; } = Expr.Empty;
 
         public bool CreateNewIfNone { get; set; }
 

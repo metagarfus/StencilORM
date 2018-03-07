@@ -100,6 +100,11 @@ namespace StencilORM.Query
 
         public object Value { get; set; }
 
+        public Literal(object value) : this()
+        {
+            this.Value = value;
+        }
+
         public static implicit operator Literal(int? value)
         {
             return new Literal
@@ -166,6 +171,14 @@ namespace StencilORM.Query
         }
 
         public static implicit operator Literal(DateTimeOffset? value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
+        public static implicit operator Literal(Guid? value)
         {
             return new Literal
             {
