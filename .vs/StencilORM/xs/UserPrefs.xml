@@ -1,0 +1,40 @@
+﻿<Properties StartupConfiguration="{07E73526-BC37-4FF9-962C-76EA6C6302D6}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="StencilORM/Query/Join.cs">
+    <Files>
+      <File FileName="StencilORM/Query/Update.cs" Line="11" Column="63" />
+      <File FileName="StencilORM/Query/Set.cs" Line="12" Column="32" />
+      <File FileName="StencilORM/Query/Column.cs" Line="1" Column="1" />
+      <File FileName="StencilORM/Query/Value.cs" Line="16" Column="1" />
+      <File FileName="StencilORM/Query/Query.cs" Line="20" Column="82" />
+      <File FileName="StencilORM/Query/Expr.cs" Line="105" Column="32" />
+      <File FileName="StencilORM/Query/IQueryCompiler.cs" Line="9" Column="9" />
+      <File FileName="StencilORM/Query/Insert.cs" Line="8" Column="6" />
+      <File FileName="StencilORM/StencilContext.cs" Line="10" Column="1" />
+      <File FileName="StencilORM/Parsers/ExprParser.cs" Line="248" Column="1" />
+      <File FileName="StencilORM/Query/Delete.cs" Line="9" Column="77" />
+      <File FileName="StencilORM/Metadata/MetadataResolver.cs" Line="67" Column="44" />
+      <File FileName="StencilORM/Metadata/TableMetadata.cs" Line="35" Column="28" />
+      <File FileName="StencilORM/IConnectionSource.cs" Line="1" Column="1" />
+      <File FileName="Test/Program.cs" Line="28" Column="13" />
+      <File FileName="StencilORM/Metadata/FieldMetadata.cs" Line="57" Column="23" />
+      <File FileName="StencilORM/Annotations/DatabaseFieldAttribute.cs" Line="22" Column="51" />
+      <File FileName="StencilORM/Annotations/DatabaseTableAttribute.cs" Line="1" Column="1" />
+      <File FileName="StencilORM/Annotations/DataType.cs" Line="1" Column="1" />
+      <File FileName="StencilORM/Query/Operation.cs" Line="26" Column="15" />
+      <File FileName="StencilORM/packages.config" Line="4" Column="12" />
+      <File FileName="StencilORM/Properties/AssemblyInfo.cs" Line="1" Column="1" />
+      <File FileName="Test/ExampleTable.cs" Line="12" Column="49" />
+      <File FileName="StencilORM/Query/Join.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/miguel/Projects/StencilORM/Test/Program.cs" relfile="Test/Program.cs" line="29" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <AuthorInfo Name="Metagarfus" Email="" Copyright="Metagarfus" Company="Metagarfus" Trademark="Metagarfus" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Test PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
