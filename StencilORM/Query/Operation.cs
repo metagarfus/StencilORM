@@ -23,6 +23,7 @@ namespace StencilORM.Query
         AND,
         OR,
         NOT,
+        EXISTS
       //  AS
     }
 }

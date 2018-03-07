@@ -1,15 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using StencilORM.Annotations;
 
 namespace StencilORM.Metadata
 {
     public struct TableMetadata
     {
-        public string TableName { get; protected set; }
-        public IDictionary<string, PropertyInfo> Fields { get; protected set; }
+        public string TableName { get; private set; }
+        public IDictionary<string, FieldMetadata> Fields { get; private set; }
+        public IDictionary<string, FieldMetadata> Keys { get; private set; }
 
-        public TableMetadata()
+        public static TableMetadata? NewTableMetadata(Type type)
         {
+            var table = type.GetTypeInfo().GetCustomAttribute<DatabaseTableAttribute>(false);
+            if (table == null)
+                return null;
+            IDictionary<string, FieldMetadata> fields = new Dictionary<string, FieldMetadata>();
+            IDictionary<string, FieldMetadata> keys = new Dictionary<string, FieldMetadata>();
+            foreach (PropertyInfo info in type.GetRuntimeProperties())
+            {
+                var newField = FieldMetadata.NewFieldMetadata(info);
+                if (newField == null || string.IsNullOrWhiteSpace(newField.Value.ColumnName))
+                    continue;
+                var field = newField.Value;
+                fields[field.ColumnName] = field;
+                if (field.Id)
+                    keys[field.ColumnName] = field;
+            }
+            return new TableMetadata
+            {
+                TableName = string.IsNullOrWhiteSpace(table.TableName) ? type.Name : table.TableName,
+                Fields = fields,
+                Keys = keys
+            };
         }
+
+
     }
 }

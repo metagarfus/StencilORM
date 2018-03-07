@@ -11,7 +11,7 @@ namespace StencilORM.Query
         // public ITransaction Transaction { get; private set; }
         public string TableName { get; private set; }
         public string Alias { get; set; }
-        // public Type SourceType { get; set; }
+        //public Type SourceType { get; set; }
         //public Type ResultType { get; set; }
         public List<Column> Columns { get; private set; } = new List<Column>();
         public IAppendableExpr WhereExpr { get; private set; }
@@ -78,7 +78,7 @@ namespace StencilORM.Query
             return this;
         }
 
-        public Query Where(Expr expr)
+        public Query Where(IExpr expr)
         {
             this.WhereExpr = this.WhereExpr.And(expr);
             return this;
@@ -90,7 +90,7 @@ namespace StencilORM.Query
             return this;
         }
 
-        public Query WhereOr(Expr expr)
+        public Query WhereOr(IExpr expr)
         {
             this.WhereExpr = this.WhereExpr.Or(expr);
             return this;
@@ -160,7 +160,7 @@ namespace StencilORM.Query
             return this;
         }
 
-        public Query Having(Expr expr)
+        public Query Having(IExpr expr)
         {
             this.GroupWhereExpr = this.GroupWhereExpr.And(expr);
             return this;
@@ -172,7 +172,7 @@ namespace StencilORM.Query
             return this;
         }
 
-        public Query HavingOr(Expr expr)
+        public Query HavingOr(IExpr expr)
         {
             this.GroupWhereExpr = this.GroupWhereExpr.Or(expr);
             return this;
@@ -253,20 +253,6 @@ namespace StencilORM.Query
             return Execute(source.QueryCompiler, parameters);
         }
 
-        public IEnumerable<T> Execute<T>(params Value[] parameters)
-        {
-            return Execute<T>(StencilContext.ConnectionSource, parameters);
-        }
-
-        public dynamic Execute(Type type, params Value[] parameters)
-        {
-            return Execute(StencilContext.ConnectionSource, type, parameters);
-        }
-
-        public IEnumerable<string[]> Execute(params Value[] parameters)
-        {
-            return Execute(StencilContext.ConnectionSource, parameters);
-        }
     }
 
     public class Query<T> : Query

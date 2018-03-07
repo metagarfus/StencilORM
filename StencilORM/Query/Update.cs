@@ -23,6 +23,11 @@ namespace StencilORM.Query
             return this;
         }
 
+        public Update InsertOrUpdate()
+        {
+            return InsertOrUpdate(true);
+        }
+
         public Update Set(params Set[] sets)
         {
             this.Sets.AddRange(sets);
@@ -34,7 +39,7 @@ namespace StencilORM.Query
             return Set(new Set(name, value));
         }
 
-        public Update Where(Expr expr)
+        public Update Where(IExpr expr)
         {
             this.WhereExpr = this.WhereExpr.And(expr);
             return this;
@@ -46,7 +51,7 @@ namespace StencilORM.Query
             return this;
         }
 
-        public Update WhereOr(Expr expr)
+        public Update WhereOr(IExpr expr)
         {
             this.WhereExpr = this.WhereExpr.Or(expr);
             return this;
@@ -66,11 +71,6 @@ namespace StencilORM.Query
         public bool Execute(IConnectionSource source, out int rowsAltered, params Value[] parameters)
         {
             return Execute(source.QueryCompiler, out rowsAltered, parameters);
-        }
-
-        public bool Execute(out int rowsAltered, params Value[] parameters)
-        {
-            return Execute(StencilContext.ConnectionSource, out rowsAltered, parameters);
         }
     }
 

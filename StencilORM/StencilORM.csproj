@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B0A2E96A-ECD2-4FCE-AC40-EA9DF8C2BB4F}</ProjectGuid>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UseMSBuildEngine>true</UseMSBuildEngine>
     <OutputType>Library</OutputType>
     <RootNamespace>StencilORM</RootNamespace>
     <AssemblyName>StencilORM</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>StencilORM.NET</PackageId>
+    <PackageVersion>0.1</PackageVersion>
+    <Authors>Metagarfus</Authors>
+    <Owners>Metagarfus</Owners>
+    <PackageProjectUrl>https://github.com/metagarfus/StencilORM.NET</PackageProjectUrl>
+    <Summary>Lightweight tool to describe data queries</Summary>
+    <Title>StencilORM.NET</Title>
+    <Description>Lightweight tool to describe data queries</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,12 +29,14 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MyClass.cs" />
@@ -53,6 +64,7 @@
     <Compile Include="Query\Delete.cs" />
     <Compile Include="Metadata\MetadataResolver.cs" />
     <Compile Include="Metadata\TableMetadata.cs" />
+    <Compile Include="Metadata\FieldMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Query\" />
@@ -61,5 +73,9 @@
     <Folder Include="Parsers\" />
     <Folder Include="Metadata\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets')" />
 </Project>

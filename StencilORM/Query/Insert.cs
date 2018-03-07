@@ -33,11 +33,6 @@ namespace StencilORM.Query
         {
             return Execute(source.QueryCompiler, out rowsAltered, parameters);
         }
-
-        public bool Execute(out int rowsAltered, params Value[] parameters)
-        {
-            return Execute(StencilContext.ConnectionSource, out rowsAltered, parameters);
-        }
     }
 
     public class Insert<T> : Insert

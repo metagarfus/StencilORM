@@ -21,8 +21,6 @@ namespace StencilORM.Annotations
 
         public bool Foreign { get; set; } = false;
 
-        public bool UseGetSet { get; set; } = false;
-
         public string UnknownEnumName { get; set; } = "";
 
         public bool ThrowIfNull { get; set; } = false;
@@ -46,8 +44,6 @@ namespace StencilORM.Annotations
         public bool AllowGeneratedIdInsert { get; set; } = false;
 
         public string ColumnDefinition { get; set; } = "";
-
-        public bool ForeignAutoCreate { get; set; } = false;
 
         public bool Version { get; set; } = false;
 

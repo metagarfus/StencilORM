@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using StencilORM.Parsers;
 
 namespace StencilORM.Query
@@ -11,6 +12,7 @@ namespace StencilORM.Query
         PARAM,
         FUNCTION,
         IF,
+        SUBQUERY,
         EMPTY,
     }
 
@@ -98,7 +100,7 @@ namespace StencilORM.Query
 
         public object Value { get; set; }
 
-        public static implicit operator Literal(int value)
+        public static implicit operator Literal(int? value)
         {
             return new Literal
             {
@@ -106,7 +108,7 @@ namespace StencilORM.Query
             };
         }
 
-        public static implicit operator Literal(long value)
+        public static implicit operator Literal(long? value)
         {
             return new Literal
             {
@@ -114,7 +116,7 @@ namespace StencilORM.Query
             };
         }
 
-        public static implicit operator Literal(double value)
+        public static implicit operator Literal(double? value)
         {
             return new Literal
             {
@@ -122,7 +124,7 @@ namespace StencilORM.Query
             };
         }
 
-        public static implicit operator Literal(float value)
+        public static implicit operator Literal(float? value)
         {
             return new Literal
             {
@@ -131,7 +133,7 @@ namespace StencilORM.Query
         }
 
 
-        public static implicit operator Literal(decimal value)
+        public static implicit operator Literal(decimal? value)
         {
             return new Literal
             {
@@ -139,7 +141,7 @@ namespace StencilORM.Query
             };
         }
 
-        public static implicit operator Literal(bool value)
+        public static implicit operator Literal(bool? value)
         {
             return new Literal
             {
@@ -148,6 +150,22 @@ namespace StencilORM.Query
         }
 
         public static implicit operator Literal(string value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
+        public static implicit operator Literal(DateTime? value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
+        public static implicit operator Literal(DateTimeOffset? value)
         {
             return new Literal
             {
@@ -171,6 +189,26 @@ namespace StencilORM.Query
                 return (Literal)(-((decimal)Value));
             if (Value is bool)
                 return (Literal)(!((bool)Value));
+            return Expr.Mul((Literal)(-1), this);
+        }
+    }
+
+    public struct SubQuery : IExpr
+    { 
+        public ExprType Type => ExprType.LITERAL;
+
+        public Query Query { get; set; }
+
+        public static implicit operator SubQuery(Query query)
+        {
+            return new SubQuery
+            {
+                Query = query
+            };
+        }
+
+        public IExpr Negate()
+        {
             return Expr.Mul((Literal)(-1), this);
         }
     }
@@ -272,7 +310,17 @@ namespace StencilORM.Query
             return NewExpr(Operation.ADD, Left, right);
         }
 
+        public static Expr Add(IExpr Left, Literal right)
+        {
+            return NewExpr(Operation.ADD, Left, right);
+        }
+
         public static Expr Sub(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.SUB, Left, right);
+        }
+
+        public static Expr Sub(IExpr Left, Literal right)
         {
             return NewExpr(Operation.SUB, Left, right);
         }
@@ -282,7 +330,17 @@ namespace StencilORM.Query
             return NewExpr(Operation.MUL, Left, right);
         }
 
+        public static Expr Mul(IExpr Left, Literal right)
+        {
+            return NewExpr(Operation.MUL, Left, right);
+        }
+
         public static Expr Div(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.DIV, Left, right);
+        }
+
+        public static Expr Div(IExpr Left, Literal right)
         {
             return NewExpr(Operation.DIV, Left, right);
         }
@@ -292,7 +350,17 @@ namespace StencilORM.Query
             return NewExpr(Operation.GT, Left, right);
         }
 
+        public static Expr Gt(Variable Left, Literal right)
+        {
+            return NewExpr(Operation.GT, Left, right);
+        }
+
         public static Expr Lt(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.LT, Left, right);
+        }
+
+        public static Expr Lt(Variable Left, Literal right)
         {
             return NewExpr(Operation.LT, Left, right);
         }
@@ -302,7 +370,17 @@ namespace StencilORM.Query
             return NewExpr(Operation.GTE, Left, right);
         }
 
+        public static Expr GtE(Variable Left, Literal right)
+        {
+            return NewExpr(Operation.GTE, Left, right);
+        }
+
         public static Expr LtE(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.LTE, Left, right);
+        }
+
+        public static Expr LtE(Variable Left, Literal right)
         {
             return NewExpr(Operation.LTE, Left, right);
         }
@@ -312,7 +390,17 @@ namespace StencilORM.Query
             return NewExpr(Operation.EQUALS, Left, right);
         }
 
+        public static Expr Eq(Variable Left, Literal right)
+        {
+            return NewExpr(Operation.EQUALS, Left, right);
+        }
+
         public static Expr NotEq(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.NOTEQUALS, Left, right);
+        }
+
+        public static Expr NotEq(Variable Left, Literal right)
         {
             return NewExpr(Operation.NOTEQUALS, Left, right);
         }
@@ -332,7 +420,27 @@ namespace StencilORM.Query
             return NewExpr(Operation.IN, Left, right);
         }
 
+        public static Expr In<T>(Variable Left, IEnumerable<T> right)
+        {
+            return NewExpr(Operation.IN, Left, new Literal { Value = right });
+        }
+
+        public static Expr In(Variable Left, SubQuery right)
+        {
+            return NewExpr(Operation.IN, Left, right);
+        }
+
         public static Expr NotIn(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.NOTIN, Left, right);
+        }
+
+        public static Expr NotIn<T>(Variable Left, IEnumerable<T> right)
+        {
+            return NewExpr(Operation.NOTIN, Left, new Literal { Value = right });
+        }
+
+        public static Expr NotIn(Variable Left, SubQuery right)
         {
             return NewExpr(Operation.NOTIN, Left, right);
         }
@@ -347,7 +455,17 @@ namespace StencilORM.Query
             return NewExpr(Operation.ISNULL, Left, null);
         }
 
+        public static Expr IsNull(Variable Left)
+        {
+            return NewExpr(Operation.ISNULL, Left, null);
+        }
+
         public static Expr NotNull(IExpr Left)
+        {
+            return NewExpr(Operation.NOTNULL, Left, null);
+        }
+
+        public static Expr NotNull(Variable Left)
         {
             return NewExpr(Operation.NOTNULL, Left, null);
         }
