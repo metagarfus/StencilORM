@@ -12,7 +12,7 @@ namespace StencilORM.Query
         PARAM,
         FUNCTION,
         IF,
-        SUBQUERY,
+       // SUBQUERY,
         EMPTY,
     }
 
@@ -186,6 +186,14 @@ namespace StencilORM.Query
             };
         }
 
+        public static implicit operator Literal(Query value)
+        {
+            return new Literal
+            {
+                Value = value
+            };
+        }
+
         public IExpr Negate()
         {
             if (Value is short)
@@ -206,7 +214,7 @@ namespace StencilORM.Query
         }
     }
 
-    public struct SubQuery : IExpr
+   /* public struct SubQuery : IExpr
     { 
         public ExprType Type => ExprType.LITERAL;
 
@@ -224,7 +232,7 @@ namespace StencilORM.Query
         {
             return Expr.Mul((Literal)(-1), this);
         }
-    }
+    }*/
 
     public struct If : IExpr
     {
@@ -428,6 +436,21 @@ namespace StencilORM.Query
             return NewExpr(Operation.OR, Left, right);
         }
 
+        public static Expr Exists(IExpr Left)
+        {
+            return NewExpr(Operation.EXISTS, Left, null);
+        }
+
+        public static Expr Exists<T>(IEnumerable<T> left)
+        {
+            return NewExpr(Operation.EXISTS, new Literal { Value = left }, null);
+        }
+
+        public static Expr Exists(Query left)
+        {
+            return NewExpr(Operation.EXISTS, (Literal)left, null);
+        }
+
         public static Expr In(IExpr Left, IExpr right)
         {
             return NewExpr(Operation.IN, Left, right);
@@ -438,9 +461,9 @@ namespace StencilORM.Query
             return NewExpr(Operation.IN, Left, new Literal { Value = right });
         }
 
-        public static Expr In(Variable Left, SubQuery right)
+        public static Expr In(Variable Left, Query right)
         {
-            return NewExpr(Operation.IN, Left, right);
+            return NewExpr(Operation.IN, Left, (Literal)right);
         }
 
         public static Expr NotIn(IExpr Left, IExpr right)
@@ -453,9 +476,9 @@ namespace StencilORM.Query
             return NewExpr(Operation.NOTIN, Left, new Literal { Value = right });
         }
 
-        public static Expr NotIn(Variable Left, SubQuery right)
+        public static Expr NotIn(Variable Left, Query right)
         {
-            return NewExpr(Operation.NOTIN, Left, right);
+            return NewExpr(Operation.NOTIN, Left, (Literal)right);
         }
 
         public static Expr Not(IExpr Left)
