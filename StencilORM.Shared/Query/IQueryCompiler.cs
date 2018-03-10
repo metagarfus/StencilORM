@@ -6,7 +6,7 @@ namespace StencilORM.Query
     public interface IQueryCompiler
     {
         IEnumerable<T> Execute<T>(Query query, params Value[] parameters);
-        dynamic Execute(Type type, Query query, params Value[] parameters);
+        object Execute(Type type, Query query, params Value[] parameters);
         IEnumerable<string[]> Execute(Query query, params Value[] parameters);
         bool Execute(Insert query, out int rowsAltered, params Value[] parameters);
         bool Execute(Update query, out int rowsAltered, params Value[] parameters);

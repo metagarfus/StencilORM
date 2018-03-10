@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{5472F125-AA80-4597-A2BD-B785AFE15D40}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>StencilORM</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IConnectionSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Annotations\DatabaseFieldAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Annotations\DatabaseTableAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Annotations\DataType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Metadata\FieldMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Metadata\MetadataResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Metadata\TableMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsers\ExprParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsers\IExprParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Column.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Delete.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Expr.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Insert.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\IQueryCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Join.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Operation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\OrderBy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Query.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Set.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Update.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\Value.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transaction\ITransaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transaction\TransactionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StencilContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IReflectionServices.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Metadata\MissingReflectionException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StencilUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Query\QueryVisitor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Annotations\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Metadata\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Parsers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Query\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Transaction\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Reflection\" />
+  </ItemGroup>
+</Project>

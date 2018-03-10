@@ -56,13 +56,16 @@ namespace StencilORM.Metadata
 
         public static FieldMetadata? NewFieldMetadata(PropertyInfo info)
         {
-            var attribute = info.GetCustomAttribute<DatabaseFieldAttribute>();
+            var reflection = StencilContext.ReflectionServices;
+            if (reflection == null)
+                throw new MissingReflectionException();
+            var attribute = reflection.GetCustomAttribute<DatabaseFieldAttribute>(info);
             if (attribute == null)
                 return null;
             return new FieldMetadata()
             {
                 PropertyInfo = info,
-                ColumnName = string.IsNullOrWhiteSpace(attribute.ColumnName) ? info.Name : attribute.ColumnName,
+                ColumnName = StencilUtils.IsNullOrWhiteSpace(attribute.ColumnName) ? info.Name : attribute.ColumnName,
                 DataType = attribute.DataType,
                 DefaultValue = attribute.DefaultValue,
                 Width = attribute.Width,

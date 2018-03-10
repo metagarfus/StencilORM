@@ -228,7 +228,7 @@ namespace StencilORM.Query
             return compiler.Execute<T>(this, parameters);
         }
 
-        public dynamic Execute(IQueryCompiler compiler, Type type, params Value[] parameters)
+        public object Execute(IQueryCompiler compiler, Type type, params Value[] parameters)
         {
             return compiler.Execute(type, this, parameters);
         }
@@ -243,7 +243,7 @@ namespace StencilORM.Query
             return Execute<T>(source.QueryCompiler, parameters);
         }
 
-        public dynamic Execute(IConnectionSource source, Type type, params Value[] parameters)
+        public object Execute(IConnectionSource source, Type type, params Value[] parameters)
         {
             return Execute(source.QueryCompiler, type, parameters);
         }

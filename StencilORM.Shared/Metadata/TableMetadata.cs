@@ -13,15 +13,18 @@ namespace StencilORM.Metadata
 
         public static TableMetadata? NewTableMetadata(Type type)
         {
-            var table = type.GetTypeInfo().GetCustomAttribute<DatabaseTableAttribute>(false);
+            var reflection = StencilContext.ReflectionServices;
+            if (reflection == null)
+                throw new MissingReflectionException();
+            var table = reflection.GetCustomAttribute<DatabaseTableAttribute>(type, false);
             if (table == null)
                 return null;
             IDictionary<string, FieldMetadata> fields = new Dictionary<string, FieldMetadata>();
             IDictionary<string, FieldMetadata> keys = new Dictionary<string, FieldMetadata>();
-            foreach (PropertyInfo info in type.GetRuntimeProperties())
+            foreach (PropertyInfo info in reflection.GetProperties(type))
             {
                 var newField = FieldMetadata.NewFieldMetadata(info);
-                if (newField == null || string.IsNullOrWhiteSpace(newField.Value.ColumnName))
+                if (newField == null || StencilUtils.IsNullOrWhiteSpace(newField.Value.ColumnName))
                     continue;
                 var field = newField.Value;
                 fields[field.ColumnName] = field;
@@ -30,7 +33,7 @@ namespace StencilORM.Metadata
             }
             return new TableMetadata
             {
-                TableName = string.IsNullOrWhiteSpace(table.TableName) ? type.Name : table.TableName,
+                TableName = StencilUtils.IsNullOrWhiteSpace(table.TableName) ? type.Name : table.TableName,
                 Fields = fields,
                 Keys = keys
             };

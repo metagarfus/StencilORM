@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props')" />
+  <Import Project="..\StencilORM.Shared\StencilORM.Shared.projitems" Label="Shared" Condition="Exists('..\StencilORM.Shared\StencilORM.Shared.projitems')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -29,53 +30,26 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7</LangVersion>
+    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Query\Column.cs" />
-    <Compile Include="Query\Expr.cs" />
-    <Compile Include="Query\Operation.cs" />
-    <Compile Include="Query\Join.cs" />
-    <Compile Include="Query\Query.cs" />
-    <Compile Include="Transaction\TransactionManager.cs" />
-    <Compile Include="Transaction\ITransaction.cs" />
-    <Compile Include="StencilContext.cs" />
-    <Compile Include="Query\OrderBy.cs" />
-    <Compile Include="IConnectionSource.cs" />
-    <Compile Include="Query\IQueryCompiler.cs" />
-    <Compile Include="Query\Update.cs" />
-    <Compile Include="Query\Insert.cs" />
-    <Compile Include="Annotations\DatabaseTableAttribute.cs" />
-    <Compile Include="Annotations\DatabaseFieldAttribute.cs" />
-    <Compile Include="Annotations\DataType.cs" />
-    <Compile Include="Parsers\IExprParser.cs" />
-    <Compile Include="Parsers\ExprParser.cs" />
-    <Compile Include="Query\Value.cs" />
-    <Compile Include="Query\Set.cs" />
-    <Compile Include="Query\Delete.cs" />
-    <Compile Include="Metadata\MetadataResolver.cs" />
-    <Compile Include="Metadata\TableMetadata.cs" />
-    <Compile Include="Metadata\FieldMetadata.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Query\" />
-    <Folder Include="Transaction\" />
-    <Folder Include="Annotations\" />
-    <Folder Include="Parsers\" />
-    <Folder Include="Metadata\" />
+    <Compile Include="ReflectionServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets')" />
+  <Import Project="..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.2\build\NuGet.Build.Packaging.targets')" />
 </Project>
