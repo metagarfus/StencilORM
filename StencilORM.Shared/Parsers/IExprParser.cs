@@ -1,5 +1,5 @@
 ﻿using System;
-using StencilORM.Query;
+using StencilORM.Queries;
 
 namespace StencilORM.Parsers
 {

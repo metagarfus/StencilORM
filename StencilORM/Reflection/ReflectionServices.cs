@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using StencilORM.Metadata;
 
-namespace StencilORM
+namespace StencilORM.Reflection
 {
     public class ReflectionServices : IReflectionServices
     {

@@ -2,7 +2,8 @@
 using System.Reflection;
 using System.Collections.Generic;
 using StencilORM.Annotations;
-using StencilORM.Query;
+using StencilORM.Queries;
+using StencilORM.Reflection;
 using System.Linq;
 
 namespace StencilORM.Metadata
@@ -67,7 +68,7 @@ namespace StencilORM.Metadata
 
         private static Set NewSet<T>(IReflectionServices reflection, T value, KeyValuePair<string, FieldMetadata> item)
         {
-            return new Set(item.Key, new Literal(reflection.GetValue(item, value)));
+            return new Set(item.Key, new Literal(item.Value.DataType, reflection.GetValue(item, value)));
         }
 
         internal static IExpr IdentityExpr<T>(T value)

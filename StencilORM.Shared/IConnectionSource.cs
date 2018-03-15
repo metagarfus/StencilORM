@@ -1,6 +1,8 @@
 ﻿using System;
 using StencilORM.Transaction;
-using StencilORM.Query;
+using StencilORM.Queries;
+using StencilORM.Compilers;
+
 namespace StencilORM
 {
     public interface IConnectionSource

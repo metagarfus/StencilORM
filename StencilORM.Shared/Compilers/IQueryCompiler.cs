@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using StencilORM.Queries;
 
-namespace StencilORM.Query
+namespace StencilORM.Compilers
 {
     public interface IQueryCompiler
     {
@@ -11,6 +12,13 @@ namespace StencilORM.Query
         bool Execute(Insert query, out int rowsAltered, params Value[] parameters);
         bool Execute(Update query, out int rowsAltered, params Value[] parameters);
         bool Execute(Delete query, out int rowsAltered, params Value[] parameters);
+
+        IPreparedStatement Prepare(Query query);
+        IPreparedStatement Prepare(Insert query);
+        IPreparedStatement Prepare(Update query);
+        IPreparedStatement Prepare(Delete query);
+        
+        bool CreateOrAlter<T>();
 
        /* bool Update(Update query, out int rowsAltered, params Value[] parameters);
         bool Insert(Insert query, out int rowsAltered, params Value[] parameters);

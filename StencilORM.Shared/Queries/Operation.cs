@@ -1,5 +1,5 @@
 ﻿using System;
-namespace StencilORM.Query
+namespace StencilORM.Queries
 {
     public enum Operation
     {
@@ -8,7 +8,7 @@ namespace StencilORM.Query
         MUL,
         DIV,
         MOD,
-        MINUS,
+        //MINUS,
         GT,
         LT,
         GTE,
@@ -23,7 +23,8 @@ namespace StencilORM.Query
         AND,
         OR,
         NOT,
-        EXISTS
+        EXISTS,
+        CONCAT,
       //  AS
     }
 }

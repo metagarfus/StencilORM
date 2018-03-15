@@ -3,13 +3,31 @@ using StencilORM.Transaction;
 using System.Collections.Generic;
 using System.Linq;
 using StencilORM.Metadata;
+using StencilORM.Compilers;
 
-namespace StencilORM.Query
+namespace StencilORM.Queries
 {
+    public class QuerySource
+    {
+        public string TableName { get; }
+        public Query TableQuery { get; }
+
+        public QuerySource(string name)
+        {
+            this.TableName = name;
+        }
+
+        public QuerySource(Query query)
+        {
+            this.TableQuery = query;
+        }
+    }
+
     public class Query
     {
         // public ITransaction Transaction { get; private set; }
-        public string TableName { get; private set; }
+        public QuerySource TableSource { get; private set; }
+        //public Query TableQuery { get; private set; }
         public string Alias { get; set; }
         //public Type SourceType { get; set; }
         //public Type ResultType { get; set; }
@@ -19,38 +37,35 @@ namespace StencilORM.Query
         public List<Column> GroupByColumns { get; private set; } = new List<Column>();
         public IAppendableExpr GroupWhereExpr { get; private set; } = Expr.Empty;
         public List<OrderBy> OrderByExprs { get; private set; } = new List<OrderBy>();
-        public int RowsLimit { get; set; }
+        public int? RowsLimit { get; set; }
         public int RowsOffset { get; set; }
-        public List<string> ParamList { get; set; } = new List<string>();
+        public bool DistinctRecords { get; set; }
+        // public List<string> ParamList { get; set; } = new List<string>();
 
         public Query(string tableName)
-            : this(/*null, */tableName, null/*, null, null*/)
+            : this(tableName, null)
         {
         }
 
-
-        /* public Query(string tableName, string alias)
-             : this(null, tableName, alias, null, null)
-         {
-         }
-
-         public Query(string tableName, Type sourceType, Type resultType)
-             : this(null, tableName, null, sourceType, resultType)
-         {
-         }
-
-         public Query(string tableName, string alias, Type sourceType, Type resultType)
-             : this(null, tableName, alias, sourceType, resultType)
-         {
-         }*/
-
-        public Query(/*ITransaction transaction, */string tableName, string alias/*, Type sourceType, Type resultType*/)
+        public Query(string tableName, string alias)
+            : this(new QuerySource(tableName), alias)
         {
-            //this.Transaction = transaction;
-            this.TableName = tableName;
+        }
+
+        public Query(Query tableQuery)
+            : this(tableQuery, null)
+        {
+        }
+
+        public Query(Query tableQuery, string alias)
+            : this(new QuerySource(tableQuery), alias)
+        {
+        }
+
+        private Query(QuerySource tableSource, string alias)
+        {
+            this.TableSource = tableSource;
             this.Alias = alias;
-            /*this.SourceType = sourceType;
-            this.ResultType = resultType;*/
         }
 
         public static implicit operator Query(string name)
@@ -119,6 +134,18 @@ namespace StencilORM.Query
             var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
             return Join(new Join(inner, outerKeysExprs, innerKeysExprs, leftJoin));
         }
+        
+        public Query Join(string inner, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
+        {
+            return Join(new Join(inner, outerKeys, innerKeys, leftJoin));
+        }
+
+        public Query Join(string inner, string[] outerKeys, string[] innerKeys, bool leftJoin)
+        {
+            var outerKeysExprs = outerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
+            var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
+            return Join(new Join(inner, outerKeysExprs, innerKeysExprs, leftJoin));
+        }
 
         public Query InnerJoin(Query inner, IExpr[] outerKeys, IExpr[] innerKeys)
         {
@@ -129,6 +156,16 @@ namespace StencilORM.Query
         {
             return Join(inner, outerKeys, innerKeys, false);
         }
+        
+        public Query InnerJoin(string inner, IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return Join(inner, outerKeys, innerKeys, false);
+        }
+
+        public Query InnerJoin(string inner, string[] outerKeys, string[] innerKeys)
+        {
+            return Join(inner, outerKeys, innerKeys, false);
+        }
 
         public Query LeftJoin(Query inner, IExpr[] outerKeys, IExpr[] innerKeys)
         {
@@ -136,6 +173,16 @@ namespace StencilORM.Query
         }
 
         public Query LeftJoin(Query inner, string[] outerKeys, string[] innerKeys)
+        {
+            return Join(inner, outerKeys, innerKeys, true);
+        }
+        
+        public Query LeftJoin(string inner, IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return Join(inner, outerKeys, innerKeys, true);
+        }
+
+        public Query LeftJoin(string inner, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, outerKeys, innerKeys, true);
         }
@@ -210,17 +257,28 @@ namespace StencilORM.Query
             return this;
         }
 
+        public Query Distinct(bool distinct)
+        {
+            this.DistinctRecords = distinct;
+            return this;
+        }
+
+        public Query Distinct()
+        {
+            return Distinct(true);
+        }
+
         public Query Offset(int offset)
         {
             this.RowsOffset = offset;
             return this;
         }
 
-        public Query Params(params string[] paramList)
-        {
-            this.ParamList.AddRange(paramList);
-            return this;
-        }
+        /*  public Query Params(params string[] paramList)
+          {
+              this.ParamList.AddRange(paramList);
+              return this;
+          }*/
 
 
         public IEnumerable<T> Execute<T>(IQueryCompiler compiler, params Value[] parameters)
@@ -238,6 +296,11 @@ namespace StencilORM.Query
             return compiler.Execute(this, parameters);
         }
 
+        public IPreparedStatement Prepare(IQueryCompiler compiler)
+        {
+            return compiler.Prepare(this);
+        }
+
         public IEnumerable<T> Execute<T>(IConnectionSource source, params Value[] parameters)
         {
             return Execute<T>(source.QueryCompiler, parameters);
@@ -253,6 +316,23 @@ namespace StencilORM.Query
             return Execute(source.QueryCompiler, parameters);
         }
 
+        public IPreparedStatement Prepare(IConnectionSource source)
+        {
+            return Prepare(source.QueryCompiler);
+        }
+
+        public bool IsTrivial()
+        {
+            return (WhereExpr == null || WhereExpr.Type == ExprType.EMPTY)
+                && (GroupWhereExpr == null || GroupWhereExpr.Type == ExprType.EMPTY)
+                && !Columns.Any()
+                && !OrderByExprs.Any()
+                && !Joins.Any()
+                && RowsLimit == null
+                && RowsOffset == 0
+                && !DistinctRecords
+                && !GroupByColumns.Any();
+        }
     }
 
     public class Query<T> : Query

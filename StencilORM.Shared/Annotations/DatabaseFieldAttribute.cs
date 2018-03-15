@@ -1,4 +1,6 @@
 ﻿using System;
+using StencilORM.Metadata;
+
 namespace StencilORM.Annotations
 {
     public class DatabaseFieldAttribute : Attribute

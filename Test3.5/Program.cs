@@ -1,6 +1,6 @@
 ﻿using System;
 using StencilORM.Parsers;
-using StencilORM.Query;
+using StencilORM.Queries;
 using Test;
 
 namespace Test3
@@ -9,7 +9,6 @@ namespace Test3
     {
         public static void Main(string[] args)
         {
-          
             var expr = ExprParser.Instance.Parse("a + 'ola mundo \n \t \\'mundo\\' ola' * (6 + -9)");
             var expr2 = ExprParser.Instance.Parse("-a");
             var expr3 = ExprParser.Instance.Parse("-a + -(4 + 6)");
@@ -28,6 +27,7 @@ namespace Test3
             Guid guid = Guid.NewGuid();
             var literal = (Literal)guid;
             var update = new Update<ExampleTable>(new ExampleTable { Key = guid });
+            update.Execute(new Compiler(), out int n1);
             var update2 = new Update<ExampleTable>(new ExampleTable { Key = guid }, "Description");
             var select = new Query<ExampleTable>().InnerJoin(new Query("SomeTable"),
                                                              new string[] { "ForeignKey" },
@@ -35,6 +35,21 @@ namespace Test3
             var select2 = new Query<ExampleTable>().LeftJoin(new Query("SomeTable"),
                                                              new string[] { "ForeignKey" },
                                                              new string[] { "SomeKey" });
+            select2.Execute(new Compiler());
+
+            var select3 = new Query<ExampleTable>().LeftJoin("SomeTable",
+                                                            new string[] { "ForeignKey" },
+                                                            new string[] { "SomeKey" });
+            select3.Execute(new Compiler());
+            var select4 = new Query<ExampleTable>()
+            .Select("a", "b", "c")
+            .Where(
+                Expr.Eq("a", "ola")
+                .And(Expr.Eq("b", 3))
+                );
+            select4.Execute(new Compiler());
+            var insertOrUpdate = new Update<ExampleTable>(new ExampleTable { Key = guid }).InsertOrUpdate();
+            insertOrUpdate.Execute(new Compiler(), out n1);
             Console.WriteLine("Hello World!");
         }
     }

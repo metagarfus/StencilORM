@@ -1,8 +1,10 @@
 ﻿using System;
-namespace StencilORM.Annotations
+namespace StencilORM.Metadata
 {
     public enum DataType
     {
+    
+        UNKNOWN,
         STRING,
         LONG_STRING,
         STRING_BYTES,
@@ -33,7 +35,6 @@ namespace StencilORM.Annotations
         BIG_INTEGER,
         BIG_DECIMAL,
         BIG_DECIMAL_NUMERIC,
-        DATE_TIME,
-        UNKNOWN
+        DATE_TIME
     }
 }

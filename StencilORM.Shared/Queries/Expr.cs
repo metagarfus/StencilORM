@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using StencilORM.Parsers;
+using StencilORM.Metadata;
 
-namespace StencilORM.Query
+namespace StencilORM.Queries
 {
     public enum ExprType
     {
@@ -12,7 +14,7 @@ namespace StencilORM.Query
         PARAM,
         FUNCTION,
         IF,
-       // SUBQUERY,
+        // SUBQUERY,
         EMPTY,
     }
 
@@ -20,22 +22,43 @@ namespace StencilORM.Query
     {
         ExprType Type { get; }
         IExpr Negate();
+        void Visit(IASTVisitor visitor);
+        void Visit<T>(T data, IASTVisitor<T> visitor);
+        void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor);
     }
 
     public struct Function : IExpr
     {
         public ExprType Type => ExprType.FUNCTION;
 
+        public string Name { get; set; }
+
         public IExpr[] Args { get; set; }
 
-        public Function(params IExpr[] args)
+        public Function(string name, params IExpr[] args)
         {
+            this.Name = name;
             this.Args = args;
         }
 
         public IExpr Negate()
         {
             throw new NotSupportedException("Parameters cannot be negated");
+        }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
         }
     }
 
@@ -59,6 +82,21 @@ namespace StencilORM.Query
         {
             throw new NotSupportedException("Parameters cannot be negated");
         }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
+        }
     }
 
     public struct Variable : IExpr
@@ -74,10 +112,13 @@ namespace StencilORM.Query
             string[] parts = (name ?? "").Split('.');
             if (parts.Length > 2)
                 throw new Exception("Variables names cannot contain more than two '.'");
-            if (parts.Length == 2) {
+            if (parts.Length == 2)
+            {
                 Scope = parts[0];
                 Name = parts[1];
-            } else {
+            }
+            else
+            {
                 Scope = null;
                 Name = parts[0];
             }
@@ -92,16 +133,39 @@ namespace StencilORM.Query
         {
             return Expr.Mul((Literal)(-1), this);
         }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
+        }
     }
 
     public struct Literal : IExpr
     {
         public ExprType Type => ExprType.LITERAL;
 
+        public DataType DataType { get; set; }
+
         public object Value { get; set; }
 
-        public Literal(object value) : this()
+        public Literal(object value)
+            : this(DataType.UNKNOWN, value)
         {
+        }
+
+        public Literal(DataType dataType, object value)
+        {
+            this.DataType = dataType;
             this.Value = value;
         }
 
@@ -197,7 +261,7 @@ namespace StencilORM.Query
         public IExpr Negate()
         {
             if (Value is short)
-                return (Literal)(-((short) Value));
+                return (Literal)(-((short)Value));
             if (Value is int)
                 return (Literal)(-((int)Value));
             if (Value is long)
@@ -212,27 +276,42 @@ namespace StencilORM.Query
                 return (Literal)(!((bool)Value));
             return Expr.Mul((Literal)(-1), this);
         }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
+        }
     }
 
-   /* public struct SubQuery : IExpr
-    { 
-        public ExprType Type => ExprType.LITERAL;
+    /* public struct SubQuery : IExpr
+     { 
+         public ExprType Type => ExprType.LITERAL;
 
-        public Query Query { get; set; }
+         public Query Query { get; set; }
 
-        public static implicit operator SubQuery(Query query)
-        {
-            return new SubQuery
-            {
-                Query = query
-            };
-        }
+         public static implicit operator SubQuery(Query query)
+         {
+             return new SubQuery
+             {
+                 Query = query
+             };
+         }
 
-        public IExpr Negate()
-        {
-            return Expr.Mul((Literal)(-1), this);
-        }
-    }*/
+         public IExpr Negate()
+         {
+             return Expr.Mul((Literal)(-1), this);
+         }
+     }*/
 
     public struct If : IExpr
     {
@@ -255,9 +334,25 @@ namespace StencilORM.Query
         {
             return Expr.Mul((Literal)(-1), this);
         }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
+        }
     }
 
-    public interface IAppendableExpr : IExpr {
+    public interface IAppendableExpr : IExpr
+    {
         IAppendableExpr And(IExpr right);
 
         IAppendableExpr Or(IExpr right);
@@ -289,6 +384,21 @@ namespace StencilORM.Query
         {
             return this;
         }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
+        }
     }
 
     public struct Expr : IAppendableExpr
@@ -300,6 +410,14 @@ namespace StencilORM.Query
         public Operation Operation { get; set; }
 
         public static readonly Empty Empty = new Empty();
+
+        public bool IsBinaryOperation()
+        {
+            return !(Operation == Operation.NOT
+                  || Operation == Operation.EXISTS
+                  || Operation == Operation.IN
+                  || Operation == Operation.NOTIN);
+        }
 
         public IExpr Negate()
         {
@@ -505,6 +623,16 @@ namespace StencilORM.Query
         {
             return NewExpr(Operation.NOTNULL, Left, null);
         }
+
+        public static Expr Concat(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.CONCAT, Left, right);
+        }
+
+        public static Expr Concat(IExpr Left, Literal right)
+        {
+            return NewExpr(Operation.CONCAT, Left, right);
+        }
         /*
         public static Expr As(IExpr Left)
         {
@@ -514,6 +642,21 @@ namespace StencilORM.Query
         public static IExpr Parse(string source)
         {
             return StencilContext.DefaultExprParser.Parse(source);
+        }
+
+        public void Visit(IASTVisitor visitor)
+        {
+            visitor.Process(this);
+        }
+
+        public void Visit<T>(T data, IASTVisitor<T> visitor)
+        {
+            visitor.Process(data, this);
+        }
+        
+        public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
+        {
+            visitor.Process(data1, data2, this);
         }
     }
 }

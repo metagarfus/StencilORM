@@ -1,5 +1,5 @@
 ﻿using System;
-using StencilORM.Query;
+using StencilORM.Queries;
 using System.Text;
 using System.Collections.Generic;
 
@@ -305,7 +305,7 @@ namespace StencilORM.Parsers
                         args.Add(ParseFromTheTop());
                     } while (Consume(','));
                     ConsumeOrFail(')');
-                    result = new Function(args.ToArray());
+                    result = new Function(name, args.ToArray());
                 }  
                 else
                     result = (Variable)name;

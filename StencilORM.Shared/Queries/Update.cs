@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using StencilORM.Metadata;
+using StencilORM.Compilers;
 
-namespace StencilORM.Query
+namespace StencilORM.Queries
 {
     public class Update
     {
@@ -68,9 +69,19 @@ namespace StencilORM.Query
             return compiler.Execute(this, out rowsAltered, parameters);
         }
 
+        public IPreparedStatement Prepare(IQueryCompiler compiler)
+        {
+            return compiler.Prepare(this);
+        }
+
         public bool Execute(IConnectionSource source, out int rowsAltered, params Value[] parameters)
         {
             return Execute(source.QueryCompiler, out rowsAltered, parameters);
+        }
+        
+        public IPreparedStatement Prepare(IConnectionSource source)
+        {
+            return Prepare(source.QueryCompiler);
         }
     }
 

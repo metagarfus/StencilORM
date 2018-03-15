@@ -1,5 +1,5 @@
 ﻿using System;
-namespace StencilORM.Query
+namespace StencilORM.Queries
 {
     public struct Column
     {
