@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using StencilORM.Annotations;
+using StencilORM.Utils;
 
 namespace StencilORM.Metadata
 {

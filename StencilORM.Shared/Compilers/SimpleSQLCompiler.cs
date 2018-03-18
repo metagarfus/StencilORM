@@ -255,7 +255,7 @@ namespace StencilORM.Compilers
                 builder.Append(" * ");
             builder.Append(" FROM ");
             var name = Process(state, builder, query.TableSource, query.Alias);
-            query.Joins.ForEach(x => Process(state, builder, x));
+            query.Joins.ListForEach(x => Process(state, builder, x));
             ProcessWhere(state, builder, query.WhereExpr);
             if (query.GroupByColumns.Any())
             {

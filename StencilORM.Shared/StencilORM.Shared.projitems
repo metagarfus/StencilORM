@@ -32,7 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transaction\TransactionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StencilContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Metadata\MissingReflectionException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StencilUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Queries\IASTVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\IReflectionServices.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Compilers\SimpleSQLCompiler.cs" />
@@ -43,6 +42,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Compilers\CompiledQuery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Compilers\PreparedInsertOrUpdate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\StencilUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\ListExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Annotations\" />
