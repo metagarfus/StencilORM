@@ -1,9 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StencilORM", "StencilORM\StencilORM.csproj", "{B0A2E96A-ECD2-4FCE-AC40-EA9DF8C2BB4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StencilORM.PCL", "StencilORM.PCL\StencilORM.PCL.csproj", "{B0A2E96A-ECD2-4FCE-AC40-EA9DF8C2BB4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{07E73526-BC37-4FF9-962C-76EA6C6302D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.PCL", "Test.PCL\Test.PCL.csproj", "{07E73526-BC37-4FF9-962C-76EA6C6302D6}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StencilORM.Shared", "StencilORM.Shared\StencilORM.Shared.shproj", "{5472F125-AA80-4597-A2BD-B785AFE15D40}"
 EndProject

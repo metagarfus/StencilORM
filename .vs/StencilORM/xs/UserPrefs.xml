@@ -1,42 +1,20 @@
-﻿<Properties StartupConfiguration="{024E72B1-E3D5-452D-AA6A-FD473656ADCE}|Default">
+﻿<Properties StartupConfiguration="{07E73526-BC37-4FF9-962C-76EA6C6302D6}|Default">
+  <MonoDevelop.Ide.ItemProperties.Test.PCL PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.Test3.5 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Test/ExampleTable.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Test.PCL/Program.cs">
     <Files>
-      <File FileName="StencilORM.Shared/Compilers/SimpleSQLCompiler.cs" Line="258" Column="36" />
-      <File FileName="Test3.5/Program.cs" Line="12" Column="1" />
-      <File FileName="StencilORM.Shared/Queries/Operation.cs" Line="11" Column="11" />
-      <File FileName="StencilORM.Shared/Queries/Expr.cs" Line="404" Column="19" />
-      <File FileName="StencilORM.Shared/Compilers/IQueryCompiler.cs" Line="21" Column="33" />
-      <File FileName="StencilORM.Shared/Queries/IPreparedStatement.cs" Line="2" Column="33" />
-      <File FileName="StencilORM.Shared/Queries/Insert.cs" Line="18" Column="23" />
-      <File FileName="StencilORM.Shared/Queries/Delete.cs" Line="58" Column="48" />
-      <File FileName="StencilORM.Shared/Queries/Update.cs" Line="1" Column="1" />
-      <File FileName="StencilORM.Shared/IConnectionSource.cs" Line="11" Column="24" />
-      <File FileName="StencilORM.Shared/Queries/Value.cs" Line="8" Column="18" />
-      <File FileName="StencilORM.Shared/Queries/IASTVisitor.cs" Line="27" Column="40" />
-      <File FileName="StencilORM.Shared/Utils/StringExtensions.cs" Line="23" Column="9" />
-      <File FileName="StencilORM.Shared/Utils/StencilUtils.cs" Line="11" Column="10" />
-      <File FileName="StencilORM.Shared/Compilers/CompiledQuery.cs" Line="15" Column="2" />
-      <File FileName="StencilORM.Shared/Compilers/PreparedInsertOrUpdate.cs" Line="20" Column="57" />
-      <File FileName="Test3.5/Compiler.cs" Line="16" Column="45" />
-      <File FileName="Test/Program.cs" Line="29" Column="36" />
-      <File FileName="StencilORM.Shared/Utils/ListExtensions.cs" Line="7" Column="39" />
-      <File FileName="StencilORM.Shared/Metadata/TableMetadata.cs" Line="5" Column="23" />
-      <File FileName="StencilORM.Shared/Metadata/FieldMetadata.cs" Line="4" Column="23" />
-      <File FileName="Test/Compiler.cs" Line="8" Column="15" />
-      <File FileName="Test/ExampleTable.cs" Line="9" Column="34" />
+      <File FileName="Test.PCL/Program.cs" Line="2" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/miguel/Projects/StencilORM/Test/Program.cs" relfile="Test/Program.cs" line="11" column="1" />
       <Breakpoint file="/Users/miguel/Projects/StencilORM/Test3.5/Program.cs" relfile="Test3.5/Program.cs" line="53" column="1" />
+      <Breakpoint file="/Users/miguel/Projects/StencilORM/Test/Program.cs" relfile="Test/Program.cs" line="52" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <AuthorInfo Name="Metagarfus" Email="" Copyright="Metagarfus" Company="Metagarfus" Trademark="Metagarfus" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.StencilORM.Shared FirstBuild="True" />
-  <MonoDevelop.Ide.ItemProperties.Test PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
