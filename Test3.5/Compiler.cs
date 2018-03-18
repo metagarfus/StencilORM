@@ -13,9 +13,14 @@ namespace Test3
         {
         }
 
-        public override bool CreateOrAlter<T1>()
+        public override bool CreateOrAlter<R>()
         {
             return false;
+        }
+
+        public override void EscapeName(StringBuilder builder, string name, bool isTableName)
+        {
+            builder.AppendFormat("[{0}]", name);
         }
 
         public override IEnumerable<R> Execute<R>(CompiledQuery<object> query, params Value[] parameters)

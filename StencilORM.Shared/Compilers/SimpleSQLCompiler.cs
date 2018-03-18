@@ -26,6 +26,10 @@ namespace StencilORM.Compilers
         public abstract bool Execute(CompiledQuery<T> query, out int rowsAltered, params Value[] parameters);
         public abstract IPreparedStatement Prepare(CompiledQuery<T> query);
 
+        public abstract bool CreateOrAlter<R>();
+
+        public abstract void EscapeName(StringBuilder builder, string name, bool isTableName);
+
         public IEnumerable<R> Execute<R>(Query query, params Value[] parameters)
         {
             return Execute<R>(CompileQuery(query), parameters);
@@ -73,7 +77,7 @@ namespace StencilORM.Compilers
 
         public IPreparedStatement Prepare(Update query)
         {
-             if (!query.CreateNewIfNone)
+            if (!query.CreateNewIfNone)
                 return Prepare(CompileUpdate(query));
             return new PreparedInsertOrUpdate
             {
@@ -124,7 +128,7 @@ namespace StencilORM.Compilers
         {
             T state = NewState();
             StringBuilder builder = new StringBuilder();
-            ProcessExistsRecordWhere(state, builder, update.WhereExpr);
+            ProcessExistsRecordWhere(state, builder, update.TableName, update.WhereExpr);
             return new CompiledQuery<T>(builder.ToString(), state);
         }
 
@@ -139,14 +143,16 @@ namespace StencilORM.Compilers
         public void Process(T state, StringBuilder builder, Update update)
         {
             builder.Append("UPDATE ");
-            builder.Append(update.TableName);
+            EscapeName(builder, update.TableName, true);
             ProcessSets(state, builder, update.Sets);
             ProcessWhere(state, builder, update.WhereExpr);
         }
 
-        public void ProcessExistsRecordWhere(T state, StringBuilder builder, IExpr expr)
+        public void ProcessExistsRecordWhere(T state, StringBuilder builder, string tableName, IExpr expr)
         {
-            builder.Append("SELECT EXISTS (SELECT * ");
+            builder.Append("SELECT EXISTS (SELECT * FROM ");
+            EscapeName(builder, tableName, true);
+            builder.Append(" WHERE ");
             expr.Visit(state, builder, this);
             builder.Append(")");
         }
@@ -226,7 +232,7 @@ namespace StencilORM.Compilers
         public void Process(T state, StringBuilder builder, Insert insert)
         {
             builder.Append("INSERT INTO ");
-            builder.Append(insert.TableName);
+            EscapeName(builder, insert.TableName, true);
             ProcessSetColumns(state, builder, insert.Sets);
             builder.Append(" VALUES ");
             ProcessSetValues(state, builder, insert.Sets);
@@ -235,7 +241,7 @@ namespace StencilORM.Compilers
         public void Process(T state, StringBuilder builder, Delete delete)
         {
             builder.Append("DELETE FROM");
-            builder.Append(delete.TableName);
+            EscapeName(builder, delete.TableName, true);
             ProcessWhere(state, builder, delete.WhereExpr);
         }
 
@@ -278,8 +284,8 @@ namespace StencilORM.Compilers
 
         private void Process(T state, StringBuilder builder, Set set)
         {
-            builder.Append(set.Name)
-                   .Append(" = ");
+            EscapeName(builder, set.Name, false);
+            builder.Append(" = ");
             set.Value.Visit(state, builder, this);
         }
 
@@ -293,7 +299,7 @@ namespace StencilORM.Compilers
         private void ProcessSetColumns(T state, StringBuilder builder, List<Set> sets)
         {
             builder.Append("(")
-                   .AppendJoin(", ", sets, (sb, x) => sb.Append(x.Name))
+                   .AppendJoin(", ", sets, (sb, x) => EscapeName(sb, x.Name, false))
                    .Append(")");
         }
 
@@ -311,7 +317,7 @@ namespace StencilORM.Compilers
             string name;
             if (query.TableName != null)
             {
-                builder.Append(query.TableName);
+                EscapeName(builder, query.TableName, true);
                 name = alias ?? query.TableName;
             }
             else
@@ -324,7 +330,10 @@ namespace StencilORM.Compilers
             }
 
             if (!StencilUtils.IsNullOrWhiteSpace(alias))
-                builder.Append(" AS ").Append(alias);
+            {
+                builder.Append(" AS ");
+                EscapeName(builder, alias, false);
+            }
             return name;
         }
 
@@ -332,7 +341,10 @@ namespace StencilORM.Compilers
         {
             column.Value.Visit(state, builder, this);
             if (!StencilUtils.IsNullOrWhiteSpace(column.Alias))
-                builder.Append(" AS ").Append(column.Alias);
+            {
+                builder.Append(" AS ");
+                EscapeName(builder, column.Alias, false);
+            }
         }
 
         public void Process(T state, StringBuilder builder, Join join)
@@ -436,8 +448,11 @@ namespace StencilORM.Compilers
         public void Process(T state, StringBuilder builder, Variable variable)
         {
             if (variable.Scope != null)
-                builder.Append(variable.Scope).Append(".");
-            builder.Append(variable.Name);
+            {
+                EscapeName(builder, variable.Scope, false);
+                builder.Append(".");
+            }
+            EscapeName(builder, variable.Name, false);
         }
 
         public void Process(T state, StringBuilder builder, If @if)
