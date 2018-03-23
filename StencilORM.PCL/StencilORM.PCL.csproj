@@ -13,13 +13,13 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
     <PackOnBuild>true</PackOnBuild>
-    <PackageId>StencilORM.NET</PackageId>
+    <PackageId>StencilORM.NET.PCL</PackageId>
     <PackageVersion>0.1</PackageVersion>
     <Authors>Metagarfus</Authors>
     <Owners>Metagarfus</Owners>
     <PackageProjectUrl>https://github.com/metagarfus/StencilORM.NET</PackageProjectUrl>
     <Summary>Lightweight tool to describe data queries</Summary>
-    <Title>StencilORM.NET</Title>
+    <Title>StencilORM.NET.PCL</Title>
     <Description>Lightweight tool to describe data queries</Description>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

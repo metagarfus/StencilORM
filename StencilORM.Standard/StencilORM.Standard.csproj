@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Owners>Metagarfus</Owners>
+    <PackageId>StencilORM.Net.Standard</PackageId>
+    <PackageVersion>0.1</PackageVersion>
+    <Authors>Metagarfus</Authors>
+    <Summary>Lightweight tool to describe data queries</Summary>
+    <Title>StencilORM.Net.Standard</Title>
+    <Description>Lightweight tool to describe data queries</Description>
+    <PackageProjectUrl>https://github.com/metagarfus/StencilORM.NET</PackageProjectUrl>
+    <PackOnBuild>true</PackOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0" />
+  </ItemGroup>
+  <Import Project="..\StencilORM.Shared\StencilORM.Shared.projitems" Label="Shared" Condition="Exists('..\StencilORM.Shared\StencilORM.Shared.projitems')" />
+</Project>

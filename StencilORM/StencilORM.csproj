@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{02A8BA30-223B-42C0-95CA-1701EE6C7693}</ProjectGuid>
+    <ProjectGuid>{74B2D20A-FCBF-4945-B359-5FAE239680D9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>StencilORM.NET3</RootNamespace>
-    <AssemblyName>StencilORM.NET3.5</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <PackageId>StencilORM.NET.3.5</PackageId>
-    <PackageVersion>0.1</PackageVersion>
-    <Authors>Metagarfus</Authors>
-    <Owners>Metagarfus</Owners>
-    <PackageProjectUrl>https://github.com/metagarfus/StencilORM.NET</PackageProjectUrl>
-    <Title>StencilORM.NET.3.5</Title>
-    <Summary>Lightweight tool to describe data queries</Summary>
-    <Description>Lightweight tool to describe data queries</Description>
-    <PackOnBuild>true</PackOnBuild>
+    <RootNamespace>StencilORM</RootNamespace>
+    <AssemblyName>StencilORM</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,10 +36,6 @@
   <ItemGroup>
     <Folder Include="Reflection\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="..\StencilORM.Shared\StencilORM.Shared.projitems" Label="Shared" Condition="Exists('..\StencilORM.Shared\StencilORM.Shared.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets" Condition="Exists('..\packages\NuGet.Build.Packaging.0.2.0\build\NuGet.Build.Packaging.targets')" />
 </Project>

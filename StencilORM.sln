@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StencilORM.NET3.5", "Stenci
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test3.5", "Test3.5\Test3.5.csproj", "{024E72B1-E3D5-452D-AA6A-FD473656ADCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StencilORM", "StencilORM\StencilORM.csproj", "{74B2D20A-FCBF-4945-B359-5FAE239680D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StencilORM.Standard", "StencilORM.Standard\StencilORM.Standard.csproj", "{D5CA2CCF-FCC1-445C-B83D-F3C5AFF533E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{024E72B1-E3D5-452D-AA6A-FD473656ADCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{024E72B1-E3D5-452D-AA6A-FD473656ADCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{024E72B1-E3D5-452D-AA6A-FD473656ADCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74B2D20A-FCBF-4945-B359-5FAE239680D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74B2D20A-FCBF-4945-B359-5FAE239680D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74B2D20A-FCBF-4945-B359-5FAE239680D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74B2D20A-FCBF-4945-B359-5FAE239680D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5CA2CCF-FCC1-445C-B83D-F3C5AFF533E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CA2CCF-FCC1-445C-B83D-F3C5AFF533E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CA2CCF-FCC1-445C-B83D-F3C5AFF533E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CA2CCF-FCC1-445C-B83D-F3C5AFF533E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

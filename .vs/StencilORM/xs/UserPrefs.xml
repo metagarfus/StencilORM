@@ -1,12 +1,23 @@
 ﻿<Properties StartupConfiguration="{07E73526-BC37-4FF9-962C-76EA6C6302D6}|Default">
   <MonoDevelop.Ide.ItemProperties.Test.PCL PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.Test3.5 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Test.PCL/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="StencilORM/Reflection/ReflectionServices.cs">
     <Files>
       <File FileName="Test.PCL/Program.cs" Line="2" Column="7" />
+      <File FileName="StencilORM.Shared/StencilContext.cs" Line="11" Column="82" />
+      <File FileName="StencilORM/Reflection/ReflectionServices.cs" Line="4" Column="27" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="StencilORM" expanded="True">
+            <Node name="StencilORM.Standard" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/miguel/Projects/StencilORM/Test3.5/Program.cs" relfile="Test3.5/Program.cs" line="53" column="1" />
