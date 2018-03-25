@@ -11,5 +11,6 @@ namespace StencilORM.Reflection
         T GetCustomAttribute<T> (PropertyInfo info) where T : Attribute;
         IEnumerable<PropertyInfo> GetProperties (Type type);
         object GetValue<T>(KeyValuePair<string, FieldMetadata> item, T value);
+        object CreateInstance(Type type);
     }
 }

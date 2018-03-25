@@ -8,6 +8,11 @@ namespace StencilORM.Reflection
     public class ReflectionServices : IReflectionServices
     {
 
+        public object CreateInstance(Type type)
+        {
+            return Activator.CreateInstance(type);
+        }
+        
         public T GetCustomAttribute<T>(Type type, bool inherit) where T : Attribute
         {
             var attributes = type.GetCustomAttributes(false);

@@ -9,8 +9,18 @@ namespace StencilORM.Queries
         public string Name { get; set; }
         public IExpr Expr { get; set; }
 
+        public Value(string name, object expr)
+            : this(name, new Literal(expr))
+        {
+        }
+
         public Value(string name, IExpr expr)
             : this(DataType.UNKNOWN, name, expr)
+        {
+        }
+        
+        public Value(DataType dataType, string name, object expr)
+            : this(dataType, name, new Literal(expr))
         {
         }
 

@@ -1,23 +1,39 @@
-﻿<Properties StartupConfiguration="{07E73526-BC37-4FF9-962C-76EA6C6302D6}|Default">
+﻿<Properties StartupConfiguration="{024E72B1-E3D5-452D-AA6A-FD473656ADCE}|Default">
   <MonoDevelop.Ide.ItemProperties.Test.PCL PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.ItemProperties.Test3.5 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="StencilORM/Reflection/ReflectionServices.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Test3.5/Program.cs">
     <Files>
-      <File FileName="Test.PCL/Program.cs" Line="2" Column="7" />
+      <File FileName="Test.PCL/Program.cs" Line="52" Column="1" />
       <File FileName="StencilORM.Shared/StencilContext.cs" Line="11" Column="82" />
-      <File FileName="StencilORM/Reflection/ReflectionServices.cs" Line="4" Column="27" />
+      <File FileName="StencilORM/Reflection/ReflectionServices.cs" Line="13" Column="8" />
+      <File FileName="Test3.5/Compiler.cs" Line="16" Column="45" />
+      <File FileName="StencilORM.Shared/Metadata/MetadataResolver.cs" Line="71" Column="84" />
+      <File FileName="StencilORM.Shared/Metadata/TableMetadata.cs" Line="18" Column="10" />
+      <File FileName="StencilORM.Standard/ReflectionServices.cs" Line="10" Column="9" />
+      <File FileName="StencilORM.Shared/Reflection/IReflectionServices.cs" Line="14" Column="42" />
+      <File FileName="StencilORM.PCL/Reflection/ReflectionServices.cs" Line="13" Column="10" />
+      <File FileName="StencilORM.NET3.5/Reflection/ReflectionServices.cs" Line="14" Column="10" />
+      <File FileName="StencilORM.Shared/Compilers/SimpleSQLCompiler.cs" Line="513" Column="37" />
+      <File FileName="StencilORM.Shared/Queries/Expr.cs" Line="506" Column="27" />
+      <File FileName="StencilORM.Shared/Queries/Value.cs" Line="35" Column="1" />
+      <File FileName="Source Not Available" />
+      <File FileName="StencilORM.Shared/IConnectionSource.cs" Line="11" Column="24" />
+      <File FileName="Test3.5/Program.cs" Line="53" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="StencilORM" expanded="True">
-            <Node name="StencilORM.Standard" selected="True" />
+            <Node name="StencilORM.Shared" expanded="True" />
+            <Node name="Test3.5" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/miguel/Projects/StencilORM/Test3.5/Program.cs" relfile="Test3.5/Program.cs" line="53" column="1" />

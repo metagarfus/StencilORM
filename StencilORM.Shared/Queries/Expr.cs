@@ -152,6 +152,8 @@ namespace StencilORM.Queries
 
     public struct Literal : IExpr
     {
+        public static Literal NULL = new Literal(null);
+    
         public ExprType Type => ExprType.LITERAL;
 
         public DataType DataType { get; set; }

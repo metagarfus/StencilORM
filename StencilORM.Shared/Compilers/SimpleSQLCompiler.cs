@@ -513,7 +513,7 @@ namespace StencilORM.Compilers
                 builder.Append(")");
             }
             else
-                builder.AppendFormat("'{0}'", value);
+                builder.AppendFormat("'{0}'", value?.ToString()?.Replace("'", "\'"));
         }
 
         public void Process(T state, StringBuilder builder, Function function)

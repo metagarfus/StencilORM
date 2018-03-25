@@ -8,9 +8,15 @@ namespace StencilORM.Metadata
 {
     public struct TableMetadata
     {
+        public Type TableType { get; private set; }
         public string TableName { get; private set; }
         public IDictionary<string, FieldMetadata> Fields { get; private set; }
         public IDictionary<string, FieldMetadata> Keys { get; private set; }
+
+        public object CreateIntance()
+        {
+            return StencilContext.ReflectionServices.CreateInstance(TableType);
+        }
 
         public static TableMetadata? NewTableMetadata(Type type)
         {
