@@ -416,11 +416,9 @@ namespace StencilORM.Queries
         public bool IsBinaryOperation()
         {
             return !(Operation == Operation.NOT
-                  || Operation == Operation.EXISTS
-                  || Operation == Operation.IN
-                  || Operation == Operation.NOTIN);
+                  || Operation == Operation.EXISTS);
         }
-
+        
         public IExpr Negate()
         {
             return Expr.Mul((Literal)(-1), this);

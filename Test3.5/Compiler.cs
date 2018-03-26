@@ -77,19 +77,79 @@ namespace Test3
             builder.AppendFormat("{0}", value);
         }
 
+        protected override void Process(object state, StringBuilder builder, DataType dataType, double value)
+        {
+           builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, float value)
+        {
+            builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, int value)
+        {
+            builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, uint value)
+        {
+             builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, long value)
+        {
+            builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, ulong value)
+        {
+            builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, short value)
+        {
+             builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, ushort value)
+        {
+             builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, sbyte value)
+        {
+             builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, byte value)
+        {
+             builder.AppendFormat("{0}", value);
+        }
+
+        protected override void Process(object state, StringBuilder builder, DataType dataType, bool value)
+        {
+             builder.AppendFormat("{0}", value);
+        }
+
         protected override void ProcessAfterQueryEnd(object state, StringBuilder builder, Query query)
         {
-            
+
         }
 
         protected override void ProcessBeforeSelectedColumns(object state, StringBuilder builder, Query query)
         {
-           
+
         }
 
         protected override void ProcessConcat(object state, StringBuilder builder, IExpr left, IExpr right)
         {
-            
+
+        }
+
+        protected override void ProcessOtherLiteral(object state, StringBuilder builder, DataType dataType, object value)
+        {
+           builder.AppendFormat("'{0}'", value?.ToString()?.Replace("'", "\\'"));
         }
     }
 }

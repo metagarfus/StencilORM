@@ -14,8 +14,20 @@ namespace StencilORM.Compilers
         protected abstract T NewState();
         public abstract void Process(T state, StringBuilder builder, Param param);
         protected abstract void Process(T state, StringBuilder builder, DataType dataType, decimal value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, double value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, float value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, int value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, uint value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, long value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, ulong value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, short value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, ushort value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, sbyte value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, byte value);
+        protected abstract void Process(T state, StringBuilder builder, DataType dataType, bool value);
         protected abstract void Process(T state, StringBuilder builder, DataType dataType, DateTimeOffset value);
         protected abstract void Process(T state, StringBuilder builder, DataType dataType, DateTime value);
+        protected abstract void ProcessOtherLiteral(T state, StringBuilder builder, DataType dataType, object value);
         protected abstract void ProcessConcat(T state, StringBuilder builder, IExpr left, IExpr right);
         protected abstract void ProcessBeforeSelectedColumns(T state, StringBuilder builder, Query query);
         protected abstract void ProcessAfterQueryEnd(T state, StringBuilder builder, Query query);
@@ -440,7 +452,7 @@ namespace StencilORM.Compilers
             }
             builder.Append(' ');
             if (isBinary)
-                expr.Right.Visit(state, builder, this);
+                expr.Right?.Visit(state, builder, this);
             else
                 expr.Left.Visit(state, builder, this);
         }
@@ -490,20 +502,40 @@ namespace StencilORM.Compilers
                 builder.Append("null");
                 return;
             }
-            if (value.Is<decimal>() || value.Is<double>() || value.Is<float>())
+            if (value.Is<decimal>())
                 Process(state, builder, dataType, (decimal)value);
-            else if (value is int || value is long || value is uint || value is ulong)
-                builder.Append(value.ToString());
+            else if (value.Is<double>())
+                Process(state, builder, dataType, (double)value);
+            else if (value.Is<float>())
+                Process(state, builder, dataType, (float)value);
+            else if (value.Is<int>())
+                Process(state, builder, dataType, (int)value);
+            else if (value.Is<uint>())
+                Process(state, builder, dataType, (uint)value);
+            else if (value.Is<long>())
+                Process(state, builder, dataType, (long)value);
+            else if (value.Is<ulong>())
+                Process(state, builder, dataType, (ulong)value);
+            else if (value.Is<short>())
+                Process(state, builder, dataType, (short)value);
+            else if (value.Is<ushort>())
+                Process(state, builder, dataType, (ushort)value);
+            else if (value.Is<sbyte>())
+                Process(state, builder, dataType, (sbyte)value);
+            else if (value.Is<byte>())
+                Process(state, builder, dataType, (byte)value);
+            else if (value.Is<bool>())
+                Process(state, builder, dataType, (bool)value);
             else if (value.Is<DateTime>())
                 Process(state, builder, dataType, (DateTime)value);
             else if (value.Is<DateTimeOffset>())
                 Process(state, builder, dataType, (DateTimeOffset)value);
-            else if (value is IEnumerable<object>)
+            else if (value is System.Collections.IEnumerable && !(value is string))
             {
-                var enumerable = ((IEnumerable<object>)value);
+                var enumerable = ((System.Collections.IEnumerable)value);
                 builder
                 .Append("(")
-                .AppendJoin(", ", enumerable, (sb, x) => ProcessLiteral(state, sb, DataType.UNKNOWN, x))
+                .AppendJoin(", ", enumerable, (sb, x) => ProcessLiteral(state, sb, dataType, x))
                 .Append(")");
             }
             else if (value is Query)
@@ -513,7 +545,7 @@ namespace StencilORM.Compilers
                 builder.Append(")");
             }
             else
-                builder.AppendFormat("'{0}'", value?.ToString()?.Replace("'", "\'"));
+                ProcessOtherLiteral(state, builder, dataType, value);
         }
 
         public void Process(T state, StringBuilder builder, Function function)

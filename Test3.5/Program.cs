@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using StencilORM.Parsers;
 using StencilORM.Queries;
 using Test;
@@ -50,6 +51,16 @@ namespace Test3
             select4.Execute(new Compiler());
             var insertOrUpdate = new Update<ExampleTable>(new ExampleTable { Key = guid }).InsertOrUpdate();
             insertOrUpdate.Execute(new Compiler(), out n1);
+            
+            var select5 = new Query<ExampleTable>().Where(Expr.NotNull("ForeignKey"));
+            select5.Execute(new Compiler());
+            
+            var select6 = new Query<ExampleTable>().Where(Expr.NotIn("ForeignKey", new int[] { 8, 9, 10 }));
+            select6.Execute(new Compiler());
+            
+            var select7 = new Query<ExampleTable>().Where(Expr.NotIn("ForeignKey", new List<string> { "8", "9", "10" }));
+            select7.Execute(new Compiler());
+            
             Console.WriteLine("Hello World!");
         }
     }

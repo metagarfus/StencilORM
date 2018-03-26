@@ -19,7 +19,21 @@ namespace StencilORM.Utils
             }
             return builder;
         }
-        
+
+        public static StringBuilder AppendJoin(this StringBuilder builder, string separator,
+                                         System.Collections.IEnumerable enumerable, Action<StringBuilder, object> generator)
+        {
+            int n = 0;
+            foreach (var item in enumerable)
+            {
+                if (n != 0)
+                    builder.Append(", ");
+                generator(builder, item);
+                n++;
+            }
+            return builder;
+        }
+
         public static bool IsEmpty(this string str)
         {
             return string.IsNullOrEmpty(str);

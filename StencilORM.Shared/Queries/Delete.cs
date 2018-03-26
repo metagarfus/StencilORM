@@ -59,7 +59,7 @@ namespace StencilORM.Queries
         }
     }
 
-    public class Delete<T> : Update
+    public class Delete<T> : Delete
     {
         public Delete()
             : base(MetadataResolver.TableName<T>())
