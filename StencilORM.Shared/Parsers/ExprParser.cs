@@ -298,6 +298,8 @@ namespace StencilORM.Parsers
                     result = (Literal)true;
                 else if (name == "false")
                     result = (Literal)false;
+                else if (name == "null")
+                    result = Literal.NULL;
                 else if (Consume('(')) {
                     List<IExpr> args = new List<IExpr>();
                     do

@@ -30,6 +30,8 @@ namespace StencilORM.Queries
     public struct Function : IExpr
     {
         public ExprType Type => ExprType.FUNCTION;
+        
+        public readonly static Function COUNT  = new Function("COUNT");
 
         public string Name { get; set; }
 
@@ -152,7 +154,7 @@ namespace StencilORM.Queries
 
     public struct Literal : IExpr
     {
-        public static Literal NULL = new Literal(null);
+        public readonly static Literal NULL = new Literal(null);
     
         public ExprType Type => ExprType.LITERAL;
 
@@ -429,9 +431,14 @@ namespace StencilORM.Queries
             return new Expr
             {
                 Operation = operation,
-                Left = left,
-                Right = right,
+                Left = left ?? Literal.NULL,
+                Right = right ?? Literal.NULL,
             };
+        }
+
+        public static IExpr Count()
+        {
+            return Function.COUNT;
         }
 
         public IAppendableExpr And(IExpr right)

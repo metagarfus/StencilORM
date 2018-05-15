@@ -282,10 +282,17 @@ namespace StencilORM.Compilers
             if (query.OrderByExprs.Any())
             {
                 builder.Append(" ORDER BY ");
-                builder.AppendJoin(", ", query.GroupByColumns, (sb, x) => Process(state, sb, x));
+                builder.AppendJoin(", ", query.OrderByExprs, (sb, x) => Process(state, sb, x));
             }
             ProcessAfterQueryEnd(state, builder, query);
             return name;
+        }
+
+        private void Process(T state, StringBuilder builder, OrderBy orderBy)
+        {
+            orderBy.Expr.Visit(state, builder, this);
+            builder.Append(' ')
+                   .Append(orderBy.Descending ? "DESC" : "ASC");
         }
 
         private void ProcessSets(T state, StringBuilder builder, List<Set> sets)
@@ -548,16 +555,26 @@ namespace StencilORM.Compilers
                 ProcessOtherLiteral(state, builder, dataType, value);
         }
 
-        public void Process(T state, StringBuilder builder, Function function)
+        public virtual void Process(T state, StringBuilder builder, Function function)
         {
             builder.Append(function.Name);
-            if (function.Args == null)
-                return;
-            foreach (var item in function.Args)
+            builder.Append("(");
+            if (function.Args != null && function.Args.Any())
             {
-                builder.Append(" ");
-                item.Visit(state, builder, this);
+                int n = 0;
+                foreach (var item in function.Args)
+                {
+                    if (n != 0)
+                        builder.Append(", ");
+                    item.Visit(state, builder, this);
+                    n++;
+                }
             }
+            else if (function.Name?.ToUpperInvariant() == "COUNT")
+            {
+                builder.Append("*");
+            }
+            builder.Append(")");
         }
     }
 }

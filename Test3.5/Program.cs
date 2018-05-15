@@ -61,6 +61,22 @@ namespace Test3
             var select7 = new Query<ExampleTable>().Where(Expr.NotIn("ForeignKey", new List<string> { "8", "9", "10" }));
             select7.Execute(new Compiler());
             
+            var select8 = new Query<ExampleTable>().Select(Expr.Count());
+            select8.Execute(new Compiler());
+            
+            var select9 = new Query<ExampleTable>().Select(new Function("TTS", (Literal)1, (Literal)4));
+            select9.Execute(new Compiler());
+            
+            var select10 = new Query<ExampleTable>().Select(Expr.Parse("MAX(ForeignKey)"));
+            select10.Execute(new Compiler());
+            
+             var select11 = new Query<ExampleTable>().Select(Expr.Parse("MAX(ForeignKey)")).Select(" A ")
+                                                     .OrderBy(true, "A", "C")
+                                                     .OrderBy(false, "B")
+                                                     .OrderBy(false, "D");
+             
+            select11.Execute(new Compiler());
+            
             Console.WriteLine("Hello World!");
         }
     }
