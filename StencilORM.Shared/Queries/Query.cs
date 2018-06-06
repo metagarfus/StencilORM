@@ -42,6 +42,11 @@ namespace StencilORM.Queries
         public bool DistinctRecords { get; set; }
         // public List<string> ParamList { get; set; } = new List<string>();
 
+        public Query()
+               : this((QuerySource)null, null)
+        {
+        }
+
         public Query(string tableName)
             : this(tableName, null)
         {
@@ -151,10 +156,20 @@ namespace StencilORM.Queries
         {
             return Join(new Join(inner, outerKeys, innerKeys, leftJoin));
         }
-        
-         public Query Join(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
+
+        public Query Join<T>(IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
+        {
+            return Join(MetadataResolver.TableName<T>(), outerKeys, innerKeys, leftJoin);
+        }
+
+        public Query Join(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
         {
             return Join(new Join(inner, alias, outerKeys, innerKeys, leftJoin));
+        }
+
+        public Query Join<T>(string alias, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
+        {
+            return Join(MetadataResolver.TableName<T>(), alias, outerKeys, innerKeys, leftJoin);
         }
 
         public Query Join(string inner, string[] outerKeys, string[] innerKeys, bool leftJoin)
@@ -163,10 +178,45 @@ namespace StencilORM.Queries
             var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();*/
             return Join(new Join(inner, outerKeys, innerKeys, leftJoin));
         }
-        
+
+        public Query Join<T>(string[] outerKeys, string[] innerKeys, bool leftJoin)
+        {
+            return Join(MetadataResolver.TableName<T>(), outerKeys, innerKeys, leftJoin);
+        }
+
         public Query Join(string inner, string alias, string[] outerKeys, string[] innerKeys, bool leftJoin)
         {
             return Join(new Join(inner, alias, outerKeys, innerKeys, leftJoin));
+        }
+
+        public Query Join<T>(string alias, string[] outerKeys, string[] innerKeys, bool leftJoin)
+        {
+            return Join(MetadataResolver.TableName<T>(), alias, outerKeys, innerKeys, leftJoin);
+        }
+
+        public Query Join(Query inner, IExpr on, bool leftJoin)
+        {
+            return Join(new Join(inner, on, leftJoin));
+        }
+
+        public Query Join(string inner, IExpr on, bool leftJoin)
+        {
+            return Join(new Join(inner, on, leftJoin));
+        }
+
+        public Query Join<T>(IExpr on, bool leftJoin)
+        {
+            return Join(MetadataResolver.TableName<T>(), on, leftJoin);
+        }
+
+        public Query Join(string inner, string alias, IExpr on, bool leftJoin)
+        {
+            return Join(new Join(inner, alias, on, leftJoin));
+        }
+
+        public Query Join<T>(string alias, IExpr on, bool leftJoin)
+        {
+            return Join(MetadataResolver.TableName<T>(), alias, on, leftJoin);
         }
 
         public Query InnerJoin(Query inner, IExpr[] outerKeys, IExpr[] innerKeys)
@@ -183,20 +233,65 @@ namespace StencilORM.Queries
         {
             return Join(inner, outerKeys, innerKeys, false);
         }
-        
+
+        public Query InnerJoin<T>(IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return InnerJoin(MetadataResolver.TableName<T>(), outerKeys, innerKeys);
+        }
+
         public Query InnerJoin(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys)
         {
             return Join(inner, alias, outerKeys, innerKeys, false);
+        }
+
+        public Query InnerJoin<T>(string alias, IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return InnerJoin(MetadataResolver.TableName<T>(), alias, outerKeys, innerKeys);
         }
 
         public Query InnerJoin(string inner, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, outerKeys, innerKeys, false);
         }
+
+        public Query InnerJoin<T>(string[] outerKeys, string[] innerKeys)
+        {
+            return InnerJoin(MetadataResolver.TableName<T>(), outerKeys, innerKeys);
+        }
         
-         public Query InnerJoin(string inner, string alias, string[] outerKeys, string[] innerKeys)
+        public Query InnerJoin(string inner, string alias, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, alias, outerKeys, innerKeys, false);
+        }
+
+        public Query InnerJoin<T>(string alias, string[] outerKeys, string[] innerKeys)
+        {
+            return InnerJoin(MetadataResolver.TableName<T>(), alias, outerKeys, innerKeys);
+        }
+        
+        public Query InnerJoin(Query inner, IExpr on)
+        {
+            return Join(inner, on, false);
+        }
+
+        public Query InnerJoin(string inner, IExpr on)
+        {
+            return Join(inner, on, false);
+        }
+
+        public Query InnerJoin<T>(IExpr on)
+        {
+            return InnerJoin(MetadataResolver.TableName<T>(), on);
+        }
+
+        public Query InnerJoin(string inner, string alias, IExpr on)
+        {
+            return Join(inner, alias, on, false);
+        }
+
+        public Query InnerJoin<T>(string alias, IExpr on)
+        {
+            return InnerJoin(MetadataResolver.TableName<T>(), alias, on);
         }
 
         public Query LeftJoin(Query inner, IExpr[] outerKeys, IExpr[] innerKeys)
@@ -213,20 +308,65 @@ namespace StencilORM.Queries
         {
             return Join(inner, outerKeys, innerKeys, true);
         }
-        
+
+        public Query LeftJoin<T>(IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return LeftJoin(MetadataResolver.TableName<T>(), outerKeys, innerKeys);
+        }
+
         public Query LeftJoin(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys)
         {
             return Join(inner, alias, outerKeys, innerKeys, true);
+        }
+
+        public Query LeftJoin<T>(string alias, IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return LeftJoin(MetadataResolver.TableName<T>(), alias, outerKeys, innerKeys);
         }
 
         public Query LeftJoin(string inner, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, outerKeys, innerKeys, true);
         }
+
+        public Query LeftJoin<T>(string[] outerKeys, string[] innerKeys)
+        {
+            return LeftJoin(MetadataResolver.TableName<T>(), outerKeys, innerKeys);
+        }
         
         public Query LeftJoin(string inner, string alias, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, alias, outerKeys, innerKeys, true);
+        }
+        
+        public Query LeftJoin<T>(string alias, string[] outerKeys, string[] innerKeys)
+        {
+            return LeftJoin(MetadataResolver.TableName<T>(), alias, outerKeys, innerKeys);
+        }
+
+        public Query LeftJoin(Query inner, IExpr on)
+        {
+            return Join(inner, on, true);
+        }
+
+        public Query LeftJoin(string inner, IExpr on)
+        {
+            return Join(inner, on, true);
+        }
+
+        public Query LeftJoin<T>(IExpr on)
+        {
+            return LeftJoin(MetadataResolver.TableName<T>(), on);
+        }
+        
+        public Query LeftJoin(string inner, string alias, IExpr on)
+        {
+            return Join(inner, alias, on, true);
+        }
+
+        public Query LeftJoin<T>(string alias, IExpr on)
+        {
+            return LeftJoin(MetadataResolver.TableName<T>(), alias, on);
         }
 
         public Query GroupBy(params Column[] columns)

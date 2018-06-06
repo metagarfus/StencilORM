@@ -27,7 +27,7 @@ namespace StencilORM.Queries
             this.Alias = alias;
         }
 
-        public static implicit operator Column(Expr expr)
+        /*public static implicit operator Column(Expr expr)
         {
             return new Column(expr);
         }
@@ -45,6 +45,6 @@ namespace StencilORM.Queries
         public static implicit operator Column(string name)
         {
             return new Column(Expr.Parse(name));
-        }
+        }*/
     }
 }

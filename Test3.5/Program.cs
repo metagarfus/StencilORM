@@ -86,6 +86,19 @@ namespace Test3
             select4.Execute(new Compiler());
             select12.Execute(new Compiler());
             Console.WriteLine(new Compiler().CompileToString(select12));
+            
+            var select13 = new Query<ExampleTable>().InnerJoin<ExampleTable>(Expr.EqParam("olaColumn", "ola"));
+            select13.Execute(new Compiler());
+            var select14 = new Query().Select(Expr.Exists(select13));
+            select14.Execute(new Compiler());
+            var select15 = new Query().Select(Expr.Parse("a.b == c.d && g.h == $a"));
+            select15.Execute(new Compiler());
+            var select16 = new Query().Select(Expr.Cast((Variable)"a.b", "decimal"));
+            select16.Execute(new Compiler());
+            var select17 = new Query().Select(Expr.Parse("Cast(a.b, 'decimal')"));
+            select17.Execute(new Compiler());
+            var select18 = new Query().Select(Expr.Parse("Cast(a.b, decimal)"));
+            select18.Execute(new Compiler());
             Console.WriteLine("Hello World!");
         }
     }

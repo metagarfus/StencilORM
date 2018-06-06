@@ -29,6 +29,7 @@ namespace StencilORM.Compilers
         protected abstract void Process(T state, StringBuilder builder, DataType dataType, DateTime value);
         protected abstract void ProcessOtherLiteral(T state, StringBuilder builder, DataType dataType, object value);
         protected abstract void ProcessConcat(T state, StringBuilder builder, IExpr left, IExpr right);
+        protected abstract void ProcessCast(T state, StringBuilder builder, IExpr expr, string typename);
         protected abstract void ProcessBeforeSelectedColumns(T state, StringBuilder builder, Query query);
         protected abstract void ProcessAfterQueryEnd(T state, StringBuilder builder, Query query);
 
@@ -285,6 +286,8 @@ namespace StencilORM.Compilers
                 builder.AppendJoin(", ", query.Columns, (sb, x) => Process(state, sb, x));
             else
                 builder.Append(" * ");
+            if (query.TableSource?.TableName == null && query.TableSource?.TableQuery == null)
+                return "";
             builder.Append(" FROM ");
             var name = Process(state, builder, query.TableSource, query.Alias);
             query.Joins.ListForEach(x => Process(state, builder, x));
@@ -577,6 +580,15 @@ namespace StencilORM.Compilers
 
         public virtual void Process(T state, StringBuilder builder, Function function)
         {
+
+            if (function.Name?.ToUpperInvariant() == "CAST" && function.Args?.Count() == 2)
+            {
+                var typename = (function.Args[1] as Literal?)?.Value?.ToString();
+                typename = typename ?? (function.Args[1] as Variable?)?.Name;
+                ProcessCast(state, builder, function.Args[0], typename ?? "");
+                return;
+            }
+        
             builder.Append(function.Name);
             builder.Append("(");
             if (function.Args != null && function.Args.Any())

@@ -55,6 +55,7 @@ namespace Test3
 
         public override void Process(object state, StringBuilder builder, Param param)
         {
+            builder.Append("?");
         }
 
         protected override object NewState()
@@ -140,6 +141,16 @@ namespace Test3
         protected override void ProcessBeforeSelectedColumns(object state, StringBuilder builder, Query query)
         {
 
+        }
+
+        protected override void ProcessCast(object state, StringBuilder builder, IExpr expr, string typename)
+        {
+            builder.Append("CAST(");
+            expr?.Visit(state, builder, this);
+            builder.Append(" AS ");
+            builder.Append(typename ?? "");
+            builder.Append(")");
+            
         }
 
         protected override void ProcessConcat(object state, StringBuilder builder, IExpr left, IExpr right)

@@ -32,6 +32,7 @@ namespace StencilORM.Queries
         public ExprType Type => ExprType.FUNCTION;
         
         public readonly static Function COUNT  = new Function("COUNT");
+        public readonly static Func<IExpr, string, Function> CAST  = (e, t)  => new Function("CAST", e, (Literal) t);
 
         public string Name { get; set; }
 
@@ -474,6 +475,11 @@ namespace StencilORM.Queries
         {
             return Function.COUNT;
         }
+        
+        public static IExpr Cast(IExpr expr, string typename)
+        {
+            return Function.CAST(expr, typename);
+        }
 
         public IAppendableExpr And(IExpr right)
         {
@@ -580,6 +586,11 @@ namespace StencilORM.Queries
             return NewExpr(Operation.EQUALS, Left, right);
         }
 
+        public static Expr EqParam(Variable Left, Param right)
+        {
+            return NewExpr(Operation.EQUALS, Left, right);
+        }
+
         public static Expr NotEq(IExpr Left, IExpr right)
         {
             return NewExpr(Operation.NOTEQUALS, Left, right);
@@ -594,6 +605,12 @@ namespace StencilORM.Queries
         {
             return NewExpr(Operation.NOTEQUALS, Left, right);
         }
+
+        public static Expr NotEqParam(Variable Left, Param right)
+        {
+            return NewExpr(Operation.NOTEQUALS, Left, right);
+        }
+
 
         public static Expr And(IExpr Left, IExpr right)
         {
