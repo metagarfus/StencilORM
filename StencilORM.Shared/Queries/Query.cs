@@ -93,6 +93,18 @@ namespace StencilORM.Queries
             return this;
         }
 
+        public Query SelectAs(IExpr column, string alias)
+        {
+            Columns.Add(new Column(column, alias));
+            return this;
+        }
+
+        public Query SelectAs(string column, string alias)
+        {
+            Columns.Add(new Column(column, alias));
+            return this;
+        }
+
         public Query Where(IExpr expr)
         {
             this.WhereExpr = this.WhereExpr.And(expr);
@@ -130,21 +142,31 @@ namespace StencilORM.Queries
 
         public Query Join(Query inner, string[] outerKeys, string[] innerKeys, bool leftJoin)
         {
-            var outerKeysExprs = outerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
-            var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
-            return Join(new Join(inner, outerKeysExprs, innerKeysExprs, leftJoin));
+            /*var outerKeysExprs = outerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
+            var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();*/
+            return Join(new Join(inner, outerKeys, innerKeys, leftJoin));
         }
         
         public Query Join(string inner, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
         {
             return Join(new Join(inner, outerKeys, innerKeys, leftJoin));
         }
+        
+         public Query Join(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys, bool leftJoin)
+        {
+            return Join(new Join(inner, alias, outerKeys, innerKeys, leftJoin));
+        }
 
         public Query Join(string inner, string[] outerKeys, string[] innerKeys, bool leftJoin)
         {
-            var outerKeysExprs = outerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
-            var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
-            return Join(new Join(inner, outerKeysExprs, innerKeysExprs, leftJoin));
+            /*var outerKeysExprs = outerKeys.Select(x => (IExpr)new Variable(x)).ToArray();
+            var innerKeysExprs = innerKeys.Select(x => (IExpr)new Variable(x)).ToArray();*/
+            return Join(new Join(inner, outerKeys, innerKeys, leftJoin));
+        }
+        
+        public Query Join(string inner, string alias, string[] outerKeys, string[] innerKeys, bool leftJoin)
+        {
+            return Join(new Join(inner, alias, outerKeys, innerKeys, leftJoin));
         }
 
         public Query InnerJoin(Query inner, IExpr[] outerKeys, IExpr[] innerKeys)
@@ -161,10 +183,20 @@ namespace StencilORM.Queries
         {
             return Join(inner, outerKeys, innerKeys, false);
         }
+        
+        public Query InnerJoin(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return Join(inner, alias, outerKeys, innerKeys, false);
+        }
 
         public Query InnerJoin(string inner, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, outerKeys, innerKeys, false);
+        }
+        
+         public Query InnerJoin(string inner, string alias, string[] outerKeys, string[] innerKeys)
+        {
+            return Join(inner, alias, outerKeys, innerKeys, false);
         }
 
         public Query LeftJoin(Query inner, IExpr[] outerKeys, IExpr[] innerKeys)
@@ -181,10 +213,20 @@ namespace StencilORM.Queries
         {
             return Join(inner, outerKeys, innerKeys, true);
         }
+        
+        public Query LeftJoin(string inner, string alias, IExpr[] outerKeys, IExpr[] innerKeys)
+        {
+            return Join(inner, alias, outerKeys, innerKeys, true);
+        }
 
         public Query LeftJoin(string inner, string[] outerKeys, string[] innerKeys)
         {
             return Join(inner, outerKeys, innerKeys, true);
+        }
+        
+        public Query LeftJoin(string inner, string alias, string[] outerKeys, string[] innerKeys)
+        {
+            return Join(inner, alias, outerKeys, innerKeys, true);
         }
 
         public Query GroupBy(params Column[] columns)

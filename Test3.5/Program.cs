@@ -33,12 +33,13 @@ namespace Test3
             var select = new Query<ExampleTable>().InnerJoin(new Query("SomeTable"),
                                                              new string[] { "ForeignKey" },
                                                              new string[] { "SomeKey" });
+            select.Execute(new Compiler());
             var select2 = new Query<ExampleTable>().LeftJoin(new Query("SomeTable"),
                                                              new string[] { "ForeignKey" },
                                                              new string[] { "SomeKey" });
             select2.Execute(new Compiler());
 
-            var select3 = new Query<ExampleTable>().LeftJoin("SomeTable",
+            var select3 = new Query<ExampleTable>().LeftJoin("SomeTable", "SomeTableAlias",
                                                             new string[] { "ForeignKey" },
                                                             new string[] { "SomeKey" });
             select3.Execute(new Compiler());
@@ -51,32 +52,40 @@ namespace Test3
             select4.Execute(new Compiler());
             var insertOrUpdate = new Update<ExampleTable>(new ExampleTable { Key = guid }).InsertOrUpdate();
             insertOrUpdate.Execute(new Compiler(), out n1);
-            
+
             var select5 = new Query<ExampleTable>().Where(Expr.NotNull("ForeignKey"));
             select5.Execute(new Compiler());
-            
+
             var select6 = new Query<ExampleTable>().Where(Expr.NotIn("ForeignKey", new int[] { 8, 9, 10 }));
             select6.Execute(new Compiler());
-            
+
             var select7 = new Query<ExampleTable>().Where(Expr.NotIn("ForeignKey", new List<string> { "8", "9", "10" }));
             select7.Execute(new Compiler());
-            
+
             var select8 = new Query<ExampleTable>().Select(Expr.Count());
             select8.Execute(new Compiler());
-            
+
             var select9 = new Query<ExampleTable>().Select(new Function("TTS", (Literal)1, (Literal)4));
             select9.Execute(new Compiler());
-            
+
             var select10 = new Query<ExampleTable>().Select(Expr.Parse("MAX(ForeignKey)"));
             select10.Execute(new Compiler());
-            
-             var select11 = new Query<ExampleTable>().Select(Expr.Parse("MAX(ForeignKey)")).Select(" A ")
-                                                     .OrderBy(true, "A", "C")
-                                                     .OrderBy(false, "B")
-                                                     .OrderBy(false, "D");
-             
+
+            var select11 = new Query<ExampleTable>().Select(Expr.Parse("MAX(ForeignKey)")).Select(" A ")
+                                                    .OrderBy(true, "A", "C")
+                                                    .OrderBy(false, "B")
+                                                    .OrderBy(false, "D");
+
             select11.Execute(new Compiler());
-            
+            var select12 = new Query<ExampleTable>()
+            .Select("a", "b", "c")
+            .Where(
+                Expr.EqVar("a", "ola")
+                .And(Expr.EqVar("b", "3"))
+                );
+            select4.Execute(new Compiler());
+            select12.Execute(new Compiler());
+            Console.WriteLine(new Compiler().CompileToString(select12));
             Console.WriteLine("Hello World!");
         }
     }

@@ -104,6 +104,26 @@ namespace StencilORM.Compilers
             return Prepare(CompileDelete(query));
         }
 
+        public string CompileToString(Query query)
+        {
+            return CompileQuery(query).Query ?? "";
+        }
+        
+        public string CompileToString(Insert insert)
+        {
+            return CompileInsert(insert).Query ?? "";
+        }
+        
+        public string CompileToString(Update update)
+        {
+            return CompileUpdate(update).Query ?? "";
+        }
+        
+        public string CompileToString(Delete delete)
+        {
+            return CompileDelete(delete).Query ?? "";
+        }
+
         public CompiledQuery<T> CompileQuery(Query query)
         {
             T state = NewState();

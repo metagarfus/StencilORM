@@ -66,7 +66,7 @@ namespace StencilORM.Queries
         {
         }
 
-        public Delete(T value, params string[] columns)
+        public Delete(T value)
            : base(MetadataResolver.TableName<T>())
         {
             Where(MetadataResolver.IdentityExpr<T>(value));

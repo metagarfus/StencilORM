@@ -155,7 +155,7 @@ namespace StencilORM.Queries
     public struct Literal : IExpr
     {
         public readonly static Literal NULL = new Literal(null);
-    
+
         public ExprType Type => ExprType.LITERAL;
 
         public DataType DataType { get; set; }
@@ -175,6 +175,9 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(int? value)
         {
+
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -183,6 +186,9 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(long? value)
         {
+
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -191,6 +197,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(double? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -199,6 +207,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(float? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -208,6 +218,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(decimal? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -216,6 +228,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(bool? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -224,6 +238,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(string value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -232,6 +248,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(DateTime? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -240,6 +258,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(DateTimeOffset? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -248,6 +268,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(Guid? value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -256,6 +278,8 @@ namespace StencilORM.Queries
 
         public static implicit operator Literal(Query value)
         {
+            if (value == null)
+                return Literal.NULL;
             return new Literal
             {
                 Value = value
@@ -290,7 +314,7 @@ namespace StencilORM.Queries
         {
             visitor.Process(data, this);
         }
-        
+
         public void Visit<T1, T2>(T1 data1, T2 data2, IASTVisitor<T1, T2> visitor)
         {
             visitor.Process(data1, data2, this);
@@ -426,14 +450,24 @@ namespace StencilORM.Queries
             return Expr.Mul((Literal)(-1), this);
         }
 
-        public static Expr NewExpr(Operation operation, IExpr left, IExpr right)
+        private static Expr InternalNewExpr(Operation operation, IExpr left, IExpr right)
         {
             return new Expr
             {
                 Operation = operation,
                 Left = left ?? Literal.NULL,
-                Right = right ?? Literal.NULL,
+                Right = right,
             };
+        }
+
+        public static Expr NewExpr(Operation operation, IExpr left, IExpr right)
+        {
+            return InternalNewExpr(operation, left, right ?? Literal.NULL);
+        }
+        
+        public static Expr NewExpr(Operation operation, IExpr left)
+        {
+            return InternalNewExpr(operation, left, null);
         }
 
         public static IExpr Count()
@@ -540,6 +574,11 @@ namespace StencilORM.Queries
         {
             return NewExpr(Operation.EQUALS, Left, right);
         }
+        
+        public static Expr EqVar(Variable Left, Variable right)
+        {
+            return NewExpr(Operation.EQUALS, Left, right);
+        }
 
         public static Expr NotEq(IExpr Left, IExpr right)
         {
@@ -547,6 +586,11 @@ namespace StencilORM.Queries
         }
 
         public static Expr NotEq(Variable Left, Literal right)
+        {
+            return NewExpr(Operation.NOTEQUALS, Left, right);
+        }
+        
+        public static Expr NotEqVar(Variable Left, Variable right)
         {
             return NewExpr(Operation.NOTEQUALS, Left, right);
         }
@@ -563,17 +607,17 @@ namespace StencilORM.Queries
 
         public static Expr Exists(IExpr Left)
         {
-            return NewExpr(Operation.EXISTS, Left, null);
+            return NewExpr(Operation.EXISTS, Left);
         }
 
         public static Expr Exists<T>(IEnumerable<T> left)
         {
-            return NewExpr(Operation.EXISTS, new Literal { Value = left }, null);
+            return NewExpr(Operation.EXISTS, new Literal { Value = left });
         }
 
         public static Expr Exists(Query left)
         {
-            return NewExpr(Operation.EXISTS, (Literal)left, null);
+            return NewExpr(Operation.EXISTS, (Literal)left);
         }
 
         public static Expr In(IExpr Left, IExpr right)
@@ -608,27 +652,27 @@ namespace StencilORM.Queries
 
         public static Expr Not(IExpr Left)
         {
-            return NewExpr(Operation.NOT, Left, null);
+            return NewExpr(Operation.NOT, Left);
         }
 
         public static Expr IsNull(IExpr Left)
         {
-            return NewExpr(Operation.ISNULL, Left, null);
+            return NewExpr(Operation.ISNULL, Left);
         }
 
         public static Expr IsNull(Variable Left)
         {
-            return NewExpr(Operation.ISNULL, Left, null);
+            return NewExpr(Operation.ISNULL, Left);
         }
 
         public static Expr NotNull(IExpr Left)
         {
-            return NewExpr(Operation.NOTNULL, Left, null);
+            return NewExpr(Operation.NOTNULL, Left);
         }
 
         public static Expr NotNull(Variable Left)
         {
-            return NewExpr(Operation.NOTNULL, Left, null);
+            return NewExpr(Operation.NOTNULL, Left);
         }
 
         public static Expr Concat(IExpr Left, IExpr right)
@@ -643,7 +687,7 @@ namespace StencilORM.Queries
         /*
         public static Expr As(IExpr Left)
         {
-            return NewExpr(Operation.AS, Left, null);
+            return NewExpr(Operation.AS, Left);
         }*/
 
         public static IExpr Parse(string source)

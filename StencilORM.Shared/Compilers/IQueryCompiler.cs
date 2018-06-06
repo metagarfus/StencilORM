@@ -23,5 +23,10 @@ namespace StencilORM.Compilers
        /* bool Update(Update query, out int rowsAltered, params Value[] parameters);
         bool Insert(Insert query, out int rowsAltered, params Value[] parameters);
         bool InsertOrUpdate(InsertOrUpdate query, out int rowsAltered, params Value[] parameters);*/
+    
+        string CompileToString(Query query);
+        string CompileToString(Insert query);
+        string CompileToString(Update query);
+        string CompileToString(Delete query);
     }
 }
