@@ -571,6 +571,16 @@ namespace StencilORM.Queries
             return NewExpr(Operation.LTE, Left, right);
         }
 
+        public static Expr Like(IExpr Left, IExpr right)
+        {
+            return NewExpr(Operation.LIKE, Left, right);
+        }
+
+        public static Expr Like(Variable Left, Literal right)
+        {
+            return NewExpr(Operation.LIKE, Left, right);
+        }
+
         public static Expr Eq(IExpr Left, IExpr right)
         {
             return NewExpr(Operation.EQUALS, Left, right);
